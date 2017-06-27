@@ -1,0 +1,8 @@
+# Java
+bin/
+
+# Idea
+.idea
+*.iml
+*.iws
+*.ipr
