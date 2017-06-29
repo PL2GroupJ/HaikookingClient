@@ -4,9 +4,9 @@ import javafx.fxml.FXML
 import javafx.fxml.Initializable
 import jp.ac.ynu.pl2017.groupj.gui.TransitionModalPane
 import jp.ac.ynu.pl2017.groupj.gui.TransitionPane
-import jp.ac.ynu.pl2017.groupj.gui.jp.ac.ynu.pl2017.groupj.gui.word.WordCloud
 import jp.ac.ynu.pl2017.groupj.gui.product.Product
 import jp.ac.ynu.pl2017.groupj.gui.setting.Setting
+import jp.ac.ynu.pl2017.groupj.gui.word.WordCloud
 import java.net.URL
 import java.util.*
 

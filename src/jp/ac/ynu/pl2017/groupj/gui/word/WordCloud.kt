@@ -1,4 +1,4 @@
-package jp.ac.ynu.pl2017.groupj.gui.jp.ac.ynu.pl2017.groupj.gui.word
+package jp.ac.ynu.pl2017.groupj.gui.word
 
 import javafx.fxml.Initializable
 import java.net.URL
