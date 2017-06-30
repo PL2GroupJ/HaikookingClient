@@ -41,6 +41,36 @@ object HttpUtils {
     }
 
     /**
+     * Http通信でGETを行う。
+     * @param urlString GETを行う対象のURLの文字列
+     * @param header GETのヘッダー
+     * @return GETのレスポンスの文字列
+     */
+    @JvmStatic fun doGet(urlString: String, header: String): String {
+        val url = URL(urlString)
+        val con = when (url.protocol) {
+            "http" -> url.openConnection() as HttpURLConnection
+            "https" -> url.openConnection() as HttpsURLConnection
+            else -> error("プロトコルにはhttpまたはhttpsを指定してください")
+        }.apply {
+            requestMethod = "GET"
+            setRequestProperty("Authorization", "OAuth $header")
+            instanceFollowRedirects = false
+            readTimeout = 10000
+            connectTimeout = 20000
+            connect()
+        }
+
+        if (con.responseCode != HttpURLConnection.HTTP_OK) {
+            println("通信失敗:${con.responseCode}")
+            return ""
+        }
+
+        val input = BufferedReader(InputStreamReader(con.inputStream))
+        return input.readText()
+    }
+
+    /**
      * URLの画像をダウンロードする。
      * @param urlString ダウンロードする画像のURLの文字列
      * @return その画像の[Image]のインスタンス

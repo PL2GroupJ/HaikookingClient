@@ -6,18 +6,27 @@ import javafx.scene.Parent
 import javafx.scene.Scene
 import javafx.stage.Modality
 import javafx.stage.Stage
+import javafx.stage.StageStyle
 import jp.ac.ynu.pl2017.groupj.gui.title.Title
+import jp.ac.ynu.pl2017.groupj.net.TwitterAPI
+import jp.ac.ynu.pl2017.groupj.util.Token
+import jp.ac.ynu.pl2017.groupj.util.User
+import java.io.FileInputStream
+import java.util.*
 
 /**
  * GUIのベースのクラス。Swingで言うところのJFrame。
  */
 class MainApp : Application() {
     private lateinit var stage: Stage
+    private lateinit var modalStage: Stage
 
     override fun start(primaryStage: Stage) {
         stage = primaryStage
         setPane(Title())
         stage.show()
+        readProperties()
+        println(User.user)
     }
 
     /**
@@ -31,7 +40,7 @@ class MainApp : Application() {
                 .apply { setController(controller) }
         val parent = loader.load<Parent>()
         stage.title = className
-        stage.scene = Scene(parent, width, height)
+        stage.scene = Scene(parent, WIDTH, HEIGHT)
 
         if (controller is TransitionPane) {
             controller.setPane = this::setPane
@@ -51,19 +60,39 @@ class MainApp : Application() {
         val loader = FXMLLoader(Class.forName(classPath).getResource("$className.fxml"))
                 .apply { setController(controller) }
         val parent = loader.load<Parent>()
-        val modalStage = Stage()
-        modalStage.apply {
+        modalStage = Stage().apply {
             initModality(Modality.APPLICATION_MODAL)
+            initStyle(StageStyle.UTILITY)
             initOwner(stage)
             title = className
             scene = Scene(parent, width, height)
             show()
         }
+
+        if (controller is HidePane) {
+            controller.hide = modalStage::hide
+        }
+    }
+
+    private fun readProperties() {
+        val p = Properties()
+        FileInputStream(PROP).use {
+            p.load(it)
+            // Twitterのプロパティ
+            if (p.containsKey(TOKEN) && p.containsKey(TOKEN_SECRET)) {
+                val token = Token(p.getProperty(TOKEN), p.getProperty(TOKEN_SECRET))
+                User.user = TwitterAPI.loadUser(token)
+                User.token = token
+            }
+        }
     }
 
     companion object {
-        val width = 450.0
-        val height = 600.0
+        val WIDTH = 450.0
+        val HEIGHT = 600.0
+        val PROP = "haikooking.properties"
+        val TOKEN = "token"
+        val TOKEN_SECRET = "tokenSecret"
     }
 }
 
@@ -73,6 +102,10 @@ interface TransitionPane {
 
 interface TransitionModalPane {
     var newPane: ((Any) -> Unit)
+}
+
+interface HidePane {
+    var hide: () -> Unit
 }
 
 fun main(args: Array<String>) {

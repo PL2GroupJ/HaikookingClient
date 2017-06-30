@@ -1,5 +1,8 @@
 package jp.ac.ynu.pl2017.groupj.net
 
+import com.google.gson.Gson
+import com.google.gson.JsonObject
+import jp.ac.ynu.pl2017.groupj.util.Token
 import jp.ac.ynu.pl2017.groupj.util.User
 import java.net.URLEncoder
 import java.util.*
@@ -13,63 +16,108 @@ object TwitterAPI {
     private val requestUrl = "https://api.twitter.com/oauth/request_token"
     private val authorizeUrl = "https://api.twitter.com/oauth/authorize"
     private val accessUrl = "https://api.twitter.com/oauth/access_token"
+    private val accountUrl = "https://api.twitter.com/1.1/account/verify_credentials.json"
     private val params = sortedMapOf(
             "oauth_consumer_key" to encode(apiKey),
             "oauth_signature_method" to encode("HMAC-SHA1"),
             "oauth_timestamp" to encode((System.currentTimeMillis() / 1000).toString()),
             "oauth_nonce" to encode(System.nanoTime().toString()),
-            "oauth_version" to encode("1.0"))
+            "oauth_version" to encode("1.0"))   // paramsは使いまわすので、新しく追加したものは削除する必要がある
+
+    /**
+     * Twitterにリクエストトークンを要求する。
+     * @return リクエストトークン[Token]
+     */
+    @JvmStatic fun loadRequestToken(): Token {
+        params.put("oauth_signature", encode(generateSignature(requestUrl, "", "POST")))
+
+        val header = params.map { (key, value) -> "$key=$value" }.joinToString(separator = ",")
+        val res = HttpUtils.doPost(requestUrl, header).split("&")
+
+        params.remove("oauth_signature")
+        return Token(token = res[0].split("=")[1], tokenSecret = res[1].split("=")[1])
+    }
+
+    /**
+     * コールバックで戻ってきたURLを解析し、トークンを生成する。
+     * @param callbackUrl OAuth認証のコールバックのURL
+     * @return オーソライズトークン(oauth_verifierをtokenSecretに入れたもの)[Token] 。認証が拒否されたならnull
+     */
+    @JvmStatic fun loadAuthorizeToken(callbackUrl: String): Token? {
+        // 認証または拒否された場合で分岐
+        if (callbackUrl.startsWith("${this.callbackUrl}?oauth_token=")) {
+            val res = callbackUrl.substringAfter("${this.callbackUrl}?").split("&")
+            return Token(token = res[0].split("=")[1], tokenSecret = res[1].split("=")[1])
+        }
+        else {
+            return null
+        }
+    }
+
+    /**
+     * Twitterにアクセストークンを要求する。オーソライズトークンは一度しか使えないことに注意する。
+     * @param token オーソライズトークン(oauth_verifierをtokenSecretに入れたもの)
+     * @return アクセストークン[Token]
+     */
+    @JvmStatic fun loadAccessToken(token: Token): Token {
+        params.apply {
+            put("oauth_token", encode(token.token))
+            put("oauth_verifier", encode(token.tokenSecret))
+            put("oauth_signature", encode(generateSignature(accessUrl, "", "POST")))
+        }
+
+        val header = params.map { (key, value) -> "$key=$value" }.joinToString(separator = ",")
+        val res = HttpUtils.doPost(accessUrl, header).split("&")
+
+        params.apply {
+            remove("oauth_token")
+            remove("oauth_verifier")
+            remove("oauth_signature")
+        }
+        return Token(token = res[0].split("=")[1], tokenSecret = res[1].split("=")[1])
+    }
 
     /**
      * OAuth認証を行うためのURLを取得する。
      * @return OAuth認証を行うURL
      */
-    fun getAuthorizeUrl(): String {
-        params.put("oauth_signature", encode(generateSignature(requestUrl, "")))
-        val header = params.map { (key, value) -> "$key=$value" }.joinToString(separator = ",")
-        val requestToken = HttpUtils.doPost(requestUrl, header).split("&")
-        val oauth_token = requestToken[0].split("=")[1]
-        println("requestToken = $requestToken")
-        return "$authorizeUrl?oauth_token=$oauth_token"
+    @JvmStatic fun loadAuthorizeUrl(): String {
+        return "$authorizeUrl?oauth_token=${loadRequestToken().token}"
     }
+
 
     /**
-     * コールバックで戻ってきたURLを解析し、アクセストークンを要求。[User]クラスのインスタンスとして返す。
-     * @param callbackUrlString OAuth認証のコールバックのURL
-     * @return [User]クラスのインスタンス。認証が拒否されたならnull
+     * ユーザデータをロードする。
+     * @param token アクセストークン
+     * @return ユーザデータ[User]
      */
-    fun getUser(callbackUrlString: String): User? {
-        // 認証または拒否された場合。callbackのURLに合わせて変える必要あり
-        if (callbackUrlString.startsWith("$callbackUrl?oauth_token=")) {
-            val authorizeToken = callbackUrlString.substringAfter("$callbackUrl?").split("&")
-            val oauth_token = authorizeToken[0].split("=")[1]
-            val oauth_verifier = authorizeToken[1].split("=")[1]
-            println("authorizeToken = $authorizeToken")
-            params.apply {
-                put("oauth_token", oauth_token)
-                put("oauth_verifier", oauth_verifier)
-                put("oauth_signature", encode(generateSignature(accessUrl, "")))
-            }
-
-            val header = params.map { (key, value) -> "$key=$value" }.joinToString(separator = ",")
-            val accessToken = HttpUtils.doPost(accessUrl, header).split("&")
-            val access_token = accessToken[0].split("=")[1]
-            val access_token_secret = accessToken[1].split("=")[1]
-            println("accessToken = $accessToken")
-
-            return User(access_token, access_token_secret, userId = accessToken[2].split("=")[1], screenName = accessToken[3].split("=")[1])
+    @JvmStatic fun loadUser(token: Token): User {
+        params.apply {
+            put("oauth_token", encode(token.token))
+            put("oauth_signature", encode(generateSignature(accountUrl, token.tokenSecret, "GET")))
         }
-        else return null
+
+        val header = params.map { (key, value) -> "$key=$value" }.joinToString(separator = ",")
+        val res = HttpUtils.doGet(accountUrl, header)
+        val json = Gson().fromJson(res, JsonObject::class.java)
+
+        params.apply {
+            remove("oauth_token")
+            remove("oauth_signature")
+        }
+        return User(json.get("name").asString,
+                    json.get("screen_name").asString,
+                    HttpUtils.downloadImage(json.get("profile_image_url_https").asString)!!)
     }
 
-    fun tweet(status: String) {
+    @JvmStatic fun tweet(status: String) {
         TODO("未実装")
     }
 
-    private fun generateSignature(url: String, oauth_token_secret: String): String {
+    private fun generateSignature(url: String, oauthTokenSecret: String, postType: String): String {
         val requestParams = params.map { (key, value) -> "$key=$value" }.joinToString(separator = "&")
-        val signatureKey = "${encode(apiSecret)}&${encode(oauth_token_secret)}"
-        val signatureData = "${encode("POST")}&${encode(url)}&${encode(requestParams)}"
+        val signatureKey = "${encode(apiSecret)}&${encode(oauthTokenSecret)}"
+        val signatureData = "${encode(postType)}&${encode(url)}&${encode(requestParams)}"
         val signingKey = SecretKeySpec(signatureKey.toByteArray(), "HmacSHA1")
         val rawHmac  = Mac.getInstance(signingKey.algorithm).run {
             init(signingKey)

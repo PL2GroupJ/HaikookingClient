@@ -2,8 +2,8 @@ package jp.ac.ynu.pl2017.groupj.gui.title
 
 import javafx.scene.canvas.GraphicsContext
 import javafx.scene.paint.Color
-import jp.ac.ynu.pl2017.groupj.gui.MainApp.Companion.height as h
-import jp.ac.ynu.pl2017.groupj.gui.MainApp.Companion.width as w
+import jp.ac.ynu.pl2017.groupj.gui.MainApp.Companion.HEIGHT as h
+import jp.ac.ynu.pl2017.groupj.gui.MainApp.Companion.WIDTH as w
 
 /**
  * タイトル画面のモデル。
