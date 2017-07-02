@@ -2,8 +2,8 @@ package jp.ac.ynu.pl2017.groupj.net
 
 import com.google.gson.Gson
 import com.google.gson.JsonObject
-import jp.ac.ynu.pl2017.groupj.util.Token
-import jp.ac.ynu.pl2017.groupj.util.User
+import jp.ac.ynu.pl2017.groupj.util.TokenPair
+import jp.ac.ynu.pl2017.groupj.util.TwitterUser
 import java.net.URLEncoder
 import java.util.*
 import javax.crypto.Mac
@@ -26,28 +26,28 @@ object TwitterAPI {
 
     /**
      * Twitterにリクエストトークンを要求する。
-     * @return リクエストトークン[Token]
+     * @return リクエストトークン[TokenPair]
      */
-    @JvmStatic fun loadRequestToken(): Token {
+    @JvmStatic fun loadRequestToken(): TokenPair {
         params.put("oauth_signature", encode(generateSignature(requestUrl, "", "POST")))
 
         val header = params.map { (key, value) -> "$key=$value" }.joinToString(separator = ",")
         val res = HttpUtils.doPost(requestUrl, header).split("&")
 
         params.remove("oauth_signature")
-        return Token(token = res[0].split("=")[1], tokenSecret = res[1].split("=")[1])
+        return TokenPair(token = res[0].split("=")[1], tokenSecret = res[1].split("=")[1])
     }
 
     /**
      * コールバックで戻ってきたURLを解析し、トークンを生成する。
      * @param callbackUrl OAuth認証のコールバックのURL
-     * @return オーソライズトークン(oauth_verifierをtokenSecretに入れたもの)[Token] 。認証が拒否されたならnull
+     * @return オーソライズトークン(oauth_verifierをtokenSecretに入れたもの)[TokenPair] 。認証が拒否されたならnull
      */
-    @JvmStatic fun loadAuthorizeToken(callbackUrl: String): Token? {
+    @JvmStatic fun loadAuthorizeToken(callbackUrl: String): TokenPair? {
         // 認証または拒否された場合で分岐
         if (callbackUrl.startsWith("${this.callbackUrl}?oauth_token=")) {
             val res = callbackUrl.substringAfter("${this.callbackUrl}?").split("&")
-            return Token(token = res[0].split("=")[1], tokenSecret = res[1].split("=")[1])
+            return TokenPair(token = res[0].split("=")[1], tokenSecret = res[1].split("=")[1])
         }
         else {
             return null
@@ -56,13 +56,13 @@ object TwitterAPI {
 
     /**
      * Twitterにアクセストークンを要求する。オーソライズトークンは一度しか使えないことに注意する。
-     * @param token オーソライズトークン(oauth_verifierをtokenSecretに入れたもの)
-     * @return アクセストークン[Token]
+     * @param tokenPair オーソライズトークン(oauth_verifierをtokenSecretに入れたもの)
+     * @return アクセストークン[TokenPair]
      */
-    @JvmStatic fun loadAccessToken(token: Token): Token {
+    @JvmStatic fun loadAccessToken(tokenPair: TokenPair): TokenPair {
         params.apply {
-            put("oauth_token", encode(token.token))
-            put("oauth_verifier", encode(token.tokenSecret))
+            put("oauth_token", encode(tokenPair.token))
+            put("oauth_verifier", encode(tokenPair.tokenSecret))
             put("oauth_signature", encode(generateSignature(accessUrl, "", "POST")))
         }
 
@@ -74,7 +74,7 @@ object TwitterAPI {
             remove("oauth_verifier")
             remove("oauth_signature")
         }
-        return Token(token = res[0].split("=")[1], tokenSecret = res[1].split("=")[1])
+        return TokenPair(token = res[0].split("=")[1], tokenSecret = res[1].split("=")[1])
     }
 
     /**
@@ -85,16 +85,15 @@ object TwitterAPI {
         return "$authorizeUrl?oauth_token=${loadRequestToken().token}"
     }
 
-
     /**
      * ユーザデータをロードする。
-     * @param token アクセストークン
-     * @return ユーザデータ[User]
+     * @param tokenPair アクセストークン
+     * @return ユーザデータ[TwitterUser]
      */
-    @JvmStatic fun loadUser(token: Token): User {
+    @JvmStatic fun loadUser(tokenPair: TokenPair): TwitterUser {
         params.apply {
-            put("oauth_token", encode(token.token))
-            put("oauth_signature", encode(generateSignature(accountUrl, token.tokenSecret, "GET")))
+            put("oauth_token", encode(tokenPair.token))
+            put("oauth_signature", encode(generateSignature(accountUrl, tokenPair.tokenSecret, "GET")))
         }
 
         val header = params.map { (key, value) -> "$key=$value" }.joinToString(separator = ",")
@@ -105,9 +104,10 @@ object TwitterAPI {
             remove("oauth_token")
             remove("oauth_signature")
         }
-        return User(json.get("name").asString,
-                    json.get("screen_name").asString,
-                    HttpUtils.downloadImage(json.get("profile_image_url_https").asString)!!)
+        return TwitterUser(json.get("name").asString,
+                           json.get("screen_name").asString,
+                           HttpUtils.downloadImage(json.get("profile_image_url_https").asString)!!,
+                           tokenPair)
     }
 
     @JvmStatic fun tweet(status: String) {

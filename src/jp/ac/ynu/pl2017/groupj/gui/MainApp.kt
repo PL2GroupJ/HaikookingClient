@@ -9,9 +9,10 @@ import javafx.stage.Stage
 import javafx.stage.StageStyle
 import jp.ac.ynu.pl2017.groupj.gui.title.Title
 import jp.ac.ynu.pl2017.groupj.net.TwitterAPI
-import jp.ac.ynu.pl2017.groupj.util.Token
+import jp.ac.ynu.pl2017.groupj.util.Season
+import jp.ac.ynu.pl2017.groupj.util.TokenPair
 import jp.ac.ynu.pl2017.groupj.util.User
-import java.io.FileInputStream
+import jp.ac.ynu.pl2017.groupj.util.read
 import java.util.*
 
 /**
@@ -26,7 +27,8 @@ class MainApp : Application() {
         setPane(Title())
         stage.show()
         readProperties()
-        println(User.user)
+        println("${User.twitter}")
+        println("${User.season}")
     }
 
     /**
@@ -75,15 +77,13 @@ class MainApp : Application() {
     }
 
     private fun readProperties() {
-        val p = Properties()
-        FileInputStream(PROP).use {
-            p.load(it)
-            // Twitterのプロパティ
-            if (p.containsKey(TOKEN) && p.containsKey(TOKEN_SECRET)) {
-                val token = Token(p.getProperty(TOKEN), p.getProperty(TOKEN_SECRET))
-                User.user = TwitterAPI.loadUser(token)
-                User.token = token
-            }
+        val props = Properties().read(PROP, TOKEN, TOKEN_SECRET, SEASON)
+        if (!props[0].isNullOrEmpty() && !props[1].isNullOrEmpty()) {
+            val tokenPair = TokenPair(props[0]!!, props[1]!!)
+            User.twitter = TwitterAPI.loadUser(tokenPair)
+        }
+        if (!props[2].isNullOrEmpty()) {
+            User.season = Season.valueOf(props[2]!!)
         }
     }
 
@@ -93,6 +93,7 @@ class MainApp : Application() {
         val PROP = "haikooking.properties"
         val TOKEN = "token"
         val TOKEN_SECRET = "tokenSecret"
+        val SEASON = "season"
     }
 }
 

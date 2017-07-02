@@ -9,11 +9,15 @@ import jp.ac.ynu.pl2017.groupj.gui.HidePane
 import jp.ac.ynu.pl2017.groupj.gui.MainApp
 import jp.ac.ynu.pl2017.groupj.net.TwitterAPI
 import jp.ac.ynu.pl2017.groupj.util.User
+import jp.ac.ynu.pl2017.groupj.util.write
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.net.URL
 import java.util.*
 
+/**
+ * TwitterのOAuth認証を行う画面のコントローラー。
+ */
 class OAuth(val url: String) : Initializable, HidePane {
     override lateinit var hide: () -> Unit
     @FXML lateinit var webView: WebView
@@ -22,10 +26,13 @@ class OAuth(val url: String) : Initializable, HidePane {
     override fun initialize(location: URL?, resources: ResourceBundle?) {
         webView.engine.load(url)
         webView.engine.locationProperty().addListener { _, _, newValue ->
-            val token = TwitterAPI.loadAuthorizeToken(newValue)
-            if (token != null) {
-                User.token = TwitterAPI.loadAccessToken(token)
-                writeProperties(MainApp.TOKEN to User.token!!.token, MainApp.TOKEN_SECRET to User.token!!.tokenSecret)
+            val tokenPair = TwitterAPI.loadAuthorizeToken(newValue)
+            // newValueがcallbackURLだった時にtokenPairが戻るので、処理を完了させる。
+            if (tokenPair != null) {
+                User.twitter = TwitterAPI.loadUser(TwitterAPI.loadAccessToken(tokenPair))
+                Properties().write(MainApp.PROP,
+                        MainApp.TOKEN to User.twitter!!.tokenPair.token,
+                        MainApp.TOKEN_SECRET to User.twitter!!.tokenPair.tokenSecret)
                 finish.set(true)
                 hide()
             }
@@ -35,15 +42,5 @@ class OAuth(val url: String) : Initializable, HidePane {
     // 再び認証のURLを開く
     @FXML fun onClickReload() {
         webView.engine.load(url)
-    }
-
-    // アクセストークンをプロパティに書き込む
-    private fun writeProperties(vararg content: Pair<String, String>) {
-        val p = Properties()
-        FileInputStream(MainApp.PROP).use {
-            p.load(it)
-            content.forEach { (key, value) -> p.setProperty(key, value) }
-            p.store(FileOutputStream(MainApp.PROP), "twitter")
-        }
     }
 }
