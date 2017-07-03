@@ -5,6 +5,7 @@ import javafx.fxml.FXML
 import javafx.fxml.Initializable
 import javafx.scene.control.Button
 import javafx.scene.control.Label
+import javafx.scene.control.ToggleButton
 import javafx.scene.control.ToggleGroup
 import javafx.scene.image.ImageView
 import jp.ac.ynu.pl2017.groupj.gui.MainApp
@@ -25,6 +26,7 @@ class Setting : Initializable, TransitionPane, TransitionModalPane {
     override lateinit var setPane: (Any) -> Unit
     override lateinit var newPane: (Any) -> Unit
     @FXML lateinit var toggleGroup: ToggleGroup
+    @FXML lateinit var advice: ToggleButton
     @FXML lateinit var twitterButton: Button
     @FXML lateinit var nameLabel: Label
     @FXML lateinit var screenNameLabel: Label
@@ -36,7 +38,14 @@ class Setting : Initializable, TransitionPane, TransitionModalPane {
         model.selected.bind(toggleGroup.selectedToggleProperty())
         toggleGroup.selectToggle(toggleGroup.toggles[User.season.ordinal])
 
-        // twitterのログインの有無で状態を変える
+        advice.run {
+            isSelected = User.advice
+            text = if (User.advice) "ON" else "OFF"
+            selectedProperty().addListener { _, _, newValue -> text = if (newValue) "ON" else "OFF" }
+            model.advice.bind(selectedProperty())
+        }
+
+        // twitterのログインの有無で状態を変える。twitterだけは保存ボタン関係なしに即時反映
         if (User.twitter != null) {
             nameLabel.text = User.twitter?.name
             screenNameLabel.text = User.twitter?.screenName

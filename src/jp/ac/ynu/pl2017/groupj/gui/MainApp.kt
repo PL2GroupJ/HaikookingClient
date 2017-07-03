@@ -29,6 +29,7 @@ class MainApp : Application() {
         readProperties()
         println("${User.twitter}")
         println("${User.season}")
+        println("advice = ${User.advice}")
     }
 
     /**
@@ -77,13 +78,16 @@ class MainApp : Application() {
     }
 
     private fun readProperties() {
-        val props = Properties().read(PROP, TOKEN, TOKEN_SECRET, SEASON)
+        val props = Properties().read(PROP, TOKEN, TOKEN_SECRET, SEASON, ADVICE)
         if (!props[0].isNullOrEmpty() && !props[1].isNullOrEmpty()) {
             val tokenPair = TokenPair(props[0]!!, props[1]!!)
             User.twitter = TwitterAPI.loadUser(tokenPair)
         }
         if (!props[2].isNullOrEmpty()) {
             User.season = Season.valueOf(props[2]!!)
+        }
+        if (!props[3].isNullOrEmpty()) {
+            User.advice = props[3]!!.toBoolean()
         }
     }
 
@@ -94,6 +98,7 @@ class MainApp : Application() {
         val TOKEN = "token"
         val TOKEN_SECRET = "tokenSecret"
         val SEASON = "season"
+        val ADVICE = "advice"
     }
 }
 
