@@ -13,6 +13,8 @@ import jp.ac.ynu.pl2017.groupj.util.Season
 import jp.ac.ynu.pl2017.groupj.util.TokenPair
 import jp.ac.ynu.pl2017.groupj.util.User
 import jp.ac.ynu.pl2017.groupj.util.read
+import java.io.File
+import java.nio.file.Paths
 import java.util.*
 
 /**
@@ -21,12 +23,16 @@ import java.util.*
 class MainApp : Application() {
     private lateinit var stage: Stage
     private lateinit var modalStage: Stage
+    private val styles = arrayOf(Paths.get("res/css/spring.css").toUri().toString(),
+                                Paths.get("res/css/summer.css").toUri().toString(),
+                                Paths.get("res/css/autumn.css").toUri().toString(),
+                                Paths.get("res/css/winter.css").toUri().toString())
 
     override fun start(primaryStage: Stage) {
+        readProperties()
         stage = primaryStage
         setPane(Title())
         stage.show()
-        readProperties()
         println("${User.twitter}")
         println("${User.season}")
         println("advice = ${User.advice}")
@@ -42,8 +48,12 @@ class MainApp : Application() {
         val loader = FXMLLoader(Class.forName(classPath).getResource("$className.fxml"))
                 .apply { setController(controller) }
         val parent = loader.load<Parent>()
-        stage.title = className
-        stage.scene = Scene(parent, WIDTH, HEIGHT)
+        val styleIndex = if (User.season == Season.DEFAULT) 1 else (User.season.ordinal - 1)
+        stage.run {
+            title = className
+            scene = Scene(parent, WIDTH, HEIGHT)
+                    .apply { stylesheets.add(styles[styleIndex]) }
+        }
 
         if (controller is TransitionPane) {
             controller.setPane = this::setPane
@@ -78,6 +88,9 @@ class MainApp : Application() {
     }
 
     private fun readProperties() {
+        if (!File(PROP).exists()) {
+            File(PROP).createNewFile()
+        }
         val props = Properties().read(PROP, TOKEN, TOKEN_SECRET, SEASON, ADVICE)
         if (!props[0].isNullOrEmpty() && !props[1].isNullOrEmpty()) {
             val tokenPair = TokenPair(props[0]!!, props[1]!!)

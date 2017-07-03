@@ -1,0 +1,13 @@
+.button {
+    -fx-text-fill: #FACD89;
+
+    -fx-background-color: linear-gradient(#EB6100 0%, #E8380D 100%);
+    -fx-background-radius: 5;
+}
+
+.toggle-button {
+    -fx-text-fill: #FACD89;
+
+    -fx-background-color: linear-gradient(#EB6100 0%, #E8380D 100%);
+    -fx-background-radius: 5;
+}
