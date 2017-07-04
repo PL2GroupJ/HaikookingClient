@@ -9,10 +9,7 @@ import javafx.stage.Stage
 import javafx.stage.StageStyle
 import jp.ac.ynu.pl2017.groupj.gui.title.Title
 import jp.ac.ynu.pl2017.groupj.net.TwitterAPI
-import jp.ac.ynu.pl2017.groupj.util.Season
-import jp.ac.ynu.pl2017.groupj.util.TokenPair
-import jp.ac.ynu.pl2017.groupj.util.User
-import jp.ac.ynu.pl2017.groupj.util.read
+import jp.ac.ynu.pl2017.groupj.util.*
 import java.io.File
 import java.nio.file.Paths
 import java.util.*
@@ -27,6 +24,7 @@ class MainApp : Application() {
                                 Paths.get("res/css/summer.css").toUri().toString(),
                                 Paths.get("res/css/autumn.css").toUri().toString(),
                                 Paths.get("res/css/winter.css").toUri().toString())
+    private val defaultIndex = Calendar.getInstance().getSeason().ordinal
 
     override fun start(primaryStage: Stage) {
         readProperties()
@@ -48,11 +46,10 @@ class MainApp : Application() {
         val loader = FXMLLoader(Class.forName(classPath).getResource("$className.fxml"))
                 .apply { setController(controller) }
         val parent = loader.load<Parent>()
-        val styleIndex = if (User.season == Season.DEFAULT) 1 else (User.season.ordinal - 1)
+        val styleIndex = if (User.season == Season.DEFAULT) defaultIndex else User.season.ordinal
         stage.run {
             title = className
-            scene = Scene(parent, WIDTH, HEIGHT)
-                    .apply { stylesheets.add(styles[styleIndex]) }
+            scene = Scene(parent, WIDTH, HEIGHT).apply { stylesheets.add(styles[styleIndex]) }
         }
 
         if (controller is TransitionPane) {

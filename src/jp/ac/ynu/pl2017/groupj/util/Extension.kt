@@ -44,3 +44,17 @@ fun Properties.delete(propertyFile: String, vararg keys: String) {
         store(FileOutputStream(MainApp.PROP), "delete:${keys.joinToString(separator = ", ")}")
     }
 }
+
+/**
+ * カレンダーの月に対応する[Season]を生成する
+ * @return カレンダーの月に対応した[Season]
+ */
+fun Calendar.getSeason(): Season {
+    return when (get(Calendar.MONTH) + 1) {
+        in 3..5  -> Season.SPRING
+        in 6..8  -> Season.SUMMER
+        in 9..11 -> Season.AUTUMN
+        12, 1, 2 -> Season.WINTER
+        else     -> Season.DEFAULT
+    }
+}

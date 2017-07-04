@@ -7,6 +7,7 @@
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -33,15 +34,18 @@
       <Label text="テーマの設定" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
       <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="20.0" GridPane.columnIndex="1">
          <children>
-            <RadioButton mnemonicParsing="false" text="日付に合わせる">
+            <RadioButton mnemonicParsing="false" text="春">
                <toggleGroup>
                   <ToggleGroup fx:id="toggleGroup" />
                </toggleGroup>
             </RadioButton>
-            <RadioButton mnemonicParsing="false" text="春" toggleGroup="$toggleGroup" />
             <RadioButton mnemonicParsing="false" text="夏" toggleGroup="$toggleGroup" />
             <RadioButton mnemonicParsing="false" text="秋" toggleGroup="$toggleGroup" />
             <RadioButton mnemonicParsing="false" text="冬" toggleGroup="$toggleGroup" />
+            <RadioButton mnemonicParsing="false" text="四季" toggleGroup="$toggleGroup">
+               <tooltip>
+                  <Tooltip text="現在の季節に合わせて、テーマが切り替わります" />
+               </tooltip></RadioButton>
          </children>
          <opaqueInsets>
             <Insets />
