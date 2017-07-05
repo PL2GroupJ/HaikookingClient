@@ -72,10 +72,9 @@ class MainApp : Application() {
         val parent = loader.load<Parent>()
         modalStage = Stage().apply {
             initModality(Modality.APPLICATION_MODAL)
-            initStyle(StageStyle.UTILITY)
             initOwner(stage)
             title = className
-            scene = Scene(parent, width, height)
+            scene = Scene(parent)
             show()
         }
 

@@ -49,7 +49,9 @@ class Haiku : Initializable, TransitionPane, TransitionModalPane {
             input.textProperty().unbindBidirectional(outputs[oldValue.toInt()].textProperty())
             input.textProperty().bindBidirectional(outputs[newValue.toInt()].textProperty())
         }
-        model.haiku.bind(Bindings.concat(output1.textProperty(), output2.textProperty(), output3.textProperty()))
+        model.haiku.bind(Bindings.concat(output1.textProperty(), System.lineSeparator(),
+                                         output2.textProperty(), System.lineSeparator(),
+                                         output3.textProperty()))
     }
 
     @FXML fun onClickSetting() {
@@ -58,7 +60,7 @@ class Haiku : Initializable, TransitionPane, TransitionModalPane {
 
     @FXML fun onClickGenerate() {
         model.generateImage()
-        setPane(Product())
+        setPane(Product(model.haiku.value))
     }
 
     @FXML fun onClickWordCloud() {

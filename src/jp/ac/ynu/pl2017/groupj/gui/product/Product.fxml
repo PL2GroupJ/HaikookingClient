@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -18,12 +22,24 @@
          <bottom>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="70.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button mnemonicParsing="false" text="ツイートする" />
-                  <Button mnemonicParsing="false" text="画像を保存する" />
+                  <Button mnemonicParsing="false" onAction="#onClickTweet" text="ツイートする" />
+                  <ToggleButton mnemonicParsing="false" text="俳句を非表示にする" />
                   <Button mnemonicParsing="false" onAction="#onClickReturn" text="もう一句" />
                </children>
             </HBox>
          </bottom>
+         <center>
+            <Label alignment="CENTER" minHeight="450.0" minWidth="450.0" text="画像の表示" BorderPane.alignment="CENTER">
+               <contextMenu>
+                  <ContextMenu>
+                    <items>
+                      <MenuItem mnemonicParsing="false" text="俳句ありで画像を保存" />
+                        <MenuItem mnemonicParsing="false" text="俳句なしで画像を保存" />
+                    </items>
+                  </ContextMenu>
+               </contextMenu>
+            </Label>
+         </center>
       </BorderPane>
    </children>
 </StackPane>
