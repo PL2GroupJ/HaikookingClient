@@ -2,44 +2,103 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <BorderPane prefHeight="200.0" prefWidth="200.0">
          <top>
-            <Button mnemonicParsing="false" onAction="#onClickSetting" text="設定(後で画像に差し替え)" BorderPane.alignment="TOP_RIGHT">
+            <BorderPane BorderPane.alignment="CENTER">
+               <right>
+                  <Button mnemonicParsing="false" onAction="#onClickSetting" text="設定(後で画像に差し替え)" BorderPane.alignment="CENTER">
+                     <BorderPane.margin>
+                        <Insets />
+                     </BorderPane.margin>
+                  </Button>
+               </right>
+               <left>
+                  <Button mnemonicParsing="false" onAction="#onClickWordCloud" text="人気の季語を見る" BorderPane.alignment="CENTER">
+                     <BorderPane.margin>
+                        <Insets />
+                     </BorderPane.margin>
+                  </Button>
+               </left>
                <BorderPane.margin>
-                  <Insets right="5.0" top="5.0" />
-               </BorderPane.margin></Button>
+                  <Insets left="15.0" right="15.0" top="10.0" />
+               </BorderPane.margin>
+            </BorderPane>
          </top>
          <center>
-            <VBox prefHeight="200.0" prefWidth="100.0" rotate="90.0" spacing="40.0" BorderPane.alignment="CENTER">
+            <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0" BorderPane.alignment="CENTER">
                <children>
-                  <TextField />
-                  <TextField />
-                  <TextField />
+                  <VBox alignment="TOP_CENTER">
+                     <children>
+                        <Label fx:id="output3" maxWidth="10.0" text="水の音" textAlignment="CENTER" wrapText="true">
+                           <font>
+                              <Font size="36.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="mark3" text="↑" />
+                     </children>
+                     <HBox.margin>
+                        <Insets top="170.0" />
+                     </HBox.margin>
+                  </VBox>
+                  <VBox alignment="TOP_CENTER">
+                     <HBox.margin>
+                        <Insets top="75.0" />
+                     </HBox.margin>
+                     <children>
+                        <Label fx:id="output2" maxWidth="10.0" text="蛙飛び込む" textAlignment="CENTER" wrapText="true">
+                           <font>
+                              <Font size="36.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="mark2" text="↑" />
+                     </children>
+                  </VBox>
+                  <VBox alignment="TOP_CENTER">
+                     <children>
+                        <Label fx:id="output1" maxWidth="10.0" text="古池や" textAlignment="CENTER" wrapText="true">
+                           <font>
+                              <Font size="36.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="mark1" text="↑" />
+                     </children>
+                  </VBox>
                </children>
-               <padding>
-                  <Insets top="230.0" />
-               </padding>
-            </VBox>
-         </center>
-         <left>
-            <Button mnemonicParsing="false" onAction="#onClickGenerate" text="俳句作成" BorderPane.alignment="BOTTOM_RIGHT">
                <BorderPane.margin>
-                  <Insets bottom="30.0" left="30.0" />
-               </BorderPane.margin></Button>
-         </left>
-         <bottom>
-            <Button mnemonicParsing="false" onAction="#onClickWordCloud" text="人気の季語を見る" BorderPane.alignment="BOTTOM_LEFT">
-               <BorderPane.margin>
-                  <Insets bottom="5.0" left="5.0" />
+                  <Insets top="40.0" />
                </BorderPane.margin>
-            </Button>
+            </HBox>
+         </center>
+         <bottom>
+            <VBox spacing="10.0" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets />
+               </BorderPane.margin>
+               <children>
+                  <HBox alignment="CENTER" spacing="10.0">
+                     <children>
+                        <Button fx:id="left" mnemonicParsing="false" text="⇦" />
+                        <TextField fx:id="input" focusTraversable="false" prefColumnCount="14" />
+                        <Button fx:id="right" mnemonicParsing="false" text="⇨" />
+                     </children>
+                  </HBox>
+                  <Button mnemonicParsing="false" onAction="#onClickGenerate" text="画像作成">
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="15.0" />
+                     </VBox.margin>
+                  </Button>
+               </children>
+            </VBox>
          </bottom>
       </BorderPane>
    </children>
