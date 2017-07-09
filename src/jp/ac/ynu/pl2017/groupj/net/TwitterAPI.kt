@@ -17,6 +17,7 @@ object TwitterAPI {
     private val authorizeUrl = "https://api.twitter.com/oauth/authorize"
     private val accessUrl = "https://api.twitter.com/oauth/access_token"
     private val accountUrl = "https://api.twitter.com/1.1/account/verify_credentials.json"
+    private val tweetUrl = "https://api.twitter.com/1.1/statuses/update.json"
     private val params = sortedMapOf(
             "oauth_consumer_key" to encode(apiKey),
             "oauth_signature_method" to encode("HMAC-SHA1"),
@@ -110,8 +111,29 @@ object TwitterAPI {
                            tokenPair)
     }
 
-    @JvmStatic fun tweet(status: String) {
-        TODO("未実装")
+    /**
+     * ツイートをする。
+     * @param tokenPair アクセストークン
+     * @param status ツイート内容
+     * @return ツイート成功の可否
+     */
+    @JvmStatic fun tweet(tokenPair: TokenPair, status: String): Boolean {
+        params.apply {
+            put("oauth_token", encode(tokenPair.token))
+            put("status", encode(status))
+            put("oauth_signature", encode(generateSignature(tweetUrl, tokenPair.tokenSecret, "POST")))
+        }
+
+        val header = params.map { (key, value) -> "$key=$value" }.joinToString(separator = ",")
+        println(header)
+        val res = HttpUtils.doPost(tweetUrl + "?status=${encode(status)}", header)
+
+        params.apply {
+            remove("oauth_token")
+            remove("status")
+            remove("oauth_signature")
+        }
+        return res.isNotEmpty() // レスポンスコードが200で無いならresはからになるため
     }
 
     private fun generateSignature(url: String, oauthTokenSecret: String, postType: String): String {
@@ -126,7 +148,6 @@ object TwitterAPI {
         return Base64.getEncoder().encodeToString(rawHmac)
     }
 
-    private fun encode(s: String): String {
-        return URLEncoder.encode(s, "UTF-8")
-    }
+    // 半角スペースと~は+と%7Eにエンコードされてしまうので、適切に変換し直す
+    private fun encode(s: String): String = URLEncoder.encode(s, "UTF-8").replace("+", "%20").replace("%7E", "~")
 }
