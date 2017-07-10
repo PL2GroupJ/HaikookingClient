@@ -3,6 +3,7 @@ package jp.ac.ynu.pl2017.groupj.util
 import javafx.embed.swing.SwingFXUtils
 import javafx.scene.image.Image
 import jp.ac.ynu.pl2017.groupj.gui.MainApp
+import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.FileInputStream
 import java.io.FileOutputStream
@@ -66,11 +67,20 @@ fun Calendar.getSeason(): Season {
 /**
  * JavaFXの[Image]をバイト列に変換する。
  * @param format 画像のフォーマット。デフォルトはpng
- * @return バイト列
+ * @return イメージを表すバイト列
  */
 fun Image.toByteArray(format: String = "png"): ByteArray {
     val bufferedImage = SwingFXUtils.fromFXImage(this, null)
     val out = ByteArrayOutputStream()
     ImageIO.write(bufferedImage, format, out)
     return out.toByteArray()
+}
+
+/**
+ * バイト列をJavaFXの[Image]に変換する。
+ * @return バイト列が表すイメージ
+ */
+fun ByteArray.toImage(): Image {
+    val bufferedImage = ImageIO.read(ByteArrayInputStream(this))
+    return SwingFXUtils.toFXImage(bufferedImage, null)
 }
