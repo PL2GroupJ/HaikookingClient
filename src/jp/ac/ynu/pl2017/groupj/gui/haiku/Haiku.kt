@@ -7,11 +7,14 @@ import javafx.fxml.Initializable
 import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.control.TextField
+import javafx.scene.image.Image
 import jp.ac.ynu.pl2017.groupj.gui.TransitionModalPane
 import jp.ac.ynu.pl2017.groupj.gui.TransitionPane
 import jp.ac.ynu.pl2017.groupj.gui.product.Product
 import jp.ac.ynu.pl2017.groupj.gui.setting.Setting
 import jp.ac.ynu.pl2017.groupj.gui.word.WordCloud
+import jp.ac.ynu.pl2017.groupj.util.Season
+import java.io.File
 import java.net.URL
 import java.util.*
 
@@ -60,7 +63,8 @@ class Haiku : Initializable, TransitionPane, TransitionModalPane {
 
     @FXML fun onClickGenerate() {
         model.generateImage()
-        setPane(Product(model.haiku.value))
+        // とりあえず夏と適当な画像を指定
+        setPane(Product(model.haiku.value, Season.SUMMER, Image(File("res/image/circle.png").inputStream())))
     }
 
     @FXML fun onClickWordCloud() {

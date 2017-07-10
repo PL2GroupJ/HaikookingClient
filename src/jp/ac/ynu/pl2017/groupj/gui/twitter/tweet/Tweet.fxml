@@ -9,6 +9,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
    <top>
@@ -23,7 +24,10 @@
             <Button alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#onClickTweet" text="投稿" BorderPane.alignment="CENTER" />
          </right>
          <center>
-            <Label fx:id="userName" text="User名" BorderPane.alignment="CENTER" />
+            <Label fx:id="userName" text="User名" BorderPane.alignment="CENTER">
+               <font>
+                  <Font size="18.0" />
+               </font></Label>
          </center>
       </BorderPane>
    </top>
@@ -31,10 +35,19 @@
       <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
             <TextArea fx:id="tweetArea" prefHeight="200.0" prefWidth="200.0" />
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+            <VBox>
                <children>
-                  <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
-                  <ToggleButton mnemonicParsing="false" selected="true" text="画像を添付" />
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+                     <children>
+                        <ImageView fx:id="thumbnail" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
+                        <ToggleButton fx:id="attachImage" mnemonicParsing="false" selected="true" text="画像を添付" />
+                     </children>
+                  </VBox>
+                  <Label fx:id="restLabel" text="残り＊文字">
+                     <VBox.margin>
+                        <Insets left="3.0" />
+                     </VBox.margin>
+                  </Label>
                </children>
             </VBox>
          </children>
