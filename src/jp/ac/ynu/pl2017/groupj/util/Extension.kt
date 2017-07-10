@@ -1,9 +1,13 @@
 package jp.ac.ynu.pl2017.groupj.util
 
+import javafx.embed.swing.SwingFXUtils
+import javafx.scene.image.Image
 import jp.ac.ynu.pl2017.groupj.gui.MainApp
+import java.io.ByteArrayOutputStream
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.util.*
+import javax.imageio.ImageIO
 
 /**
  * プロパティファイルを読み込んで、リストとして返す。
@@ -46,7 +50,7 @@ fun Properties.delete(propertyFile: String, vararg keys: String) {
 }
 
 /**
- * カレンダーの月に対応する[Season]を生成する
+ * カレンダーの月に対応する[Season]を生成する。
  * @return カレンダーの月に対応した[Season]
  */
 fun Calendar.getSeason(): Season {
@@ -57,4 +61,16 @@ fun Calendar.getSeason(): Season {
         12, 1, 2 -> Season.WINTER
         else     -> Season.DEFAULT
     }
+}
+
+/**
+ * JavaFXの[Image]をバイト列に変換する。
+ * @param format 画像のフォーマット。デフォルトはpng
+ * @return バイト列
+ */
+fun Image.toByteArray(format: String = "png"): ByteArray {
+    val bufferedImage = SwingFXUtils.fromFXImage(this, null)
+    val out = ByteArrayOutputStream()
+    ImageIO.write(bufferedImage, format, out)
+    return out.toByteArray()
 }
