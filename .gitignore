@@ -1,5 +1,7 @@
 # Java
 bin/
+out/
+META-INF/
 *.properties
 
 # Idea
