@@ -29,63 +29,41 @@ public class ImageUtil {
 	
 	private static Image haikuimage=null;
 	private static Image haikuimageWithStr=null;
-
+	///*
 		public static void main(String[] args) {
 			// TODO 自動生成されたメソッド・スタブ
 			BufferedImage backimage=null;
 			BufferedImage compimage=null;
 			BufferedImage compimage2=null;
+			BufferedImage wctest=null;
 			
 
 			try {
 				//backimage = ImageIO.read(new File("fallbackground.jpg"));
-				backimage =ImageIO.read(new File("fallbackground.jpg"));
-			    //compimage = ImageIO.read(new File("fish.png"));
-			    //compimage = ImageIO.read(new File("rose.png"));
-			    //compimage = ImageIO.read(new File("GrayCat.jpg"));
-			    //compimage = ImageIO.read(new File("GrayCat2.jpg"));
-			    //compimage=ImageIO.read(new File("ColorDog.jpg"));
+				backimage =ImageIO.read(new File("spring-mask.png"));
 			    compimage2=ImageIO.read(new File("ColorCat.jpg"));//ここに画像パス
 			    compimage=ImageIO.read(new File("ColorFish.jpg"));//ここに画像パス
+			    wctest=ImageIO.read(new File("spring_wordcloud.png"));
 			} catch (Exception e) {
 			    e.printStackTrace();
 			    backimage = null;
 			    compimage = null;
 			}
 			JFrame frame=new JFrame();
-			BufferedImage img1;
-			BufferedImage img2;
 			BufferedImage synimg;
 			BufferedImage newbackimage=null;
 			Image[] fximg={SwingFXUtils.toFXImage(compimage, null),SwingFXUtils.toFXImage(compimage2, null)};
-			/*
-			newbackimage=magnifySizeImage(backimage,400,400);//背景画像加工 //450*450
-			newbackimage=AlphaChange(newbackimage,0);
-			//newbackimage=getgrayImage(newbackimage);
-			/*
-			//img1=getAlphaImage(getBWImage((Image)compimage),Color.BLACK);//コンポーネント画像1加工
-			img1=magnifySizeImage(compimage,200,200);
-			img1=getBWImage(img1);
-			java.awt.Image afterimg1=CircleImage(img1);
-
-			//img2=getAlphaImage(getBWImage((Image)compimage2),Color.BLACK);//コンポーネント画像2加工
-			img2=magnifySizeImage(compimage2,200,200);
-			img2=getgrayImage(img2);
-			//img2=CircleImage(img2);
-
-
-			synimg=synthesizeImage(newbackimage,afterimg1,20,20);//
-			//JLabel icon=new JLabel(new ImageIcon(synimg));
-
-
-			synimg=synthesizeImage(synimg,img2,200,300);//
-			synimg=DrawString(synimg,"古池や");
-			*/
+			Image wcView=SwingFXUtils.toFXImage(wctest,null);
+			Image backimagefx=SwingFXUtils.toFXImage(backimage,null);
+			java.awt.Image wcs=WCImagemodify(wcView,backimagefx);
 			String[] Haiku={"古池や","蛙飛び込む","水の音"};
 			Image Haikuimg=null;
-			createHaikuImage(150,backimage,fximg,Haiku);
-			synimg=SwingFXUtils.fromFXImage(gethaikuimgWithstr(), null);
-			JLabel icon=new JLabel(new ImageIcon(synimg));
+			createHaikuImage(150,backimagefx,fximg,Haiku);
+			//synimg=SwingFXUtils.fromFXImage(gethaikuimgWithstr(), null);//俳句付き画像
+			synimg=SwingFXUtils.fromFXImage(getHaikuimg(), null); //俳句なし画像表示テスト用
+			
+			JLabel icon=new JLabel(new ImageIcon((java.awt.Image)synimg));
+			//JLabel icon=new JLabel(new ImageIcon(wcs));
 
 
 
@@ -95,6 +73,7 @@ public class ImageUtil {
 			icon.setBounds(20, 20, synimg.getWidth(null),synimg.getHeight(null) );
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		}
+		//*/
 
 		private static BufferedImage getAlphaImage(BufferedImage img,BufferedImage backimg) {
 			if (img == null|| backimg==null) return null;
@@ -123,7 +102,7 @@ public class ImageUtil {
 			//int color = alpha.getRGB();
 			for(int i=0;i<width*height;i++){
 				if (pixel[i]==backpixel[i]) {
-					pixel[i] = (pixel[i] & 0xF0FFFFFF);
+					pixel[i] = pixel[i]& 0xAFFFFFFF;
 				}
 			}
 			
@@ -182,7 +161,7 @@ public class ImageUtil {
 			 return createBufferedImage(scaledImage);
 			 }
 
-		private static BufferedImage synthesizeImage(BufferedImage back,java.awt.Image comp,int x,int y){
+		private static BufferedImage synthesizeImage(java.awt.Image back,java.awt.Image comp,int x,int y){
 			//画像合成メソッド backは背景,compは合成画像,x,yは合成始点座標
 			if(back==null||comp==null) return null;
 			int width = back.getWidth(null);
@@ -220,7 +199,6 @@ public class ImageUtil {
 			if(img==null) return null;
 			int width = img.getWidth(null);
 			int height = img.getHeight(null);
-			System.out.println(width);
 			//if(width<x || height<y) return img;
 			BufferedImage Bcircle=null;
 
@@ -259,11 +237,6 @@ public class ImageUtil {
 			java.awt.Image alphaImage = Toolkit.getDefaultToolkit().createImage(new MemoryImageSource(width, height, pixel, 0, width));
 			return alphaImage;
 
-			//g.setClip(new Ellipse2D.Double(0,0,200,200));
-			//g.drawImage();
-
-			//Image alphaImage = Toolkit.getDefaultToolkit().createImage(new MemoryImageSource(width, height, pixel, 0, width));
-			//return alphaImage;
 
 			}
 
@@ -314,33 +287,35 @@ public class ImageUtil {
 			return bimg;
 		}
 		
-		public static void createHaikuImage(int compsize,BufferedImage backimage,Image[] img,String[] str){
+		public static void createHaikuImage(int compsize,Image backimage,Image[] img,String[] str){
+			//2種の俳句画像を生成、compsizeは合成素材画像サイズ,backimageは背景画像,strは俳句をいれる
 			if(backimage==null || img.length==0 || str.length!=3) return;
 			BufferedImage newbackimage=null;
+			resetHaikuImage();
 			
-			newbackimage=magnifySizeImage(backimage,450,450);//背景画像加工 //450*450
+			newbackimage=SwingFXUtils.fromFXImage(backimage,null);
+			newbackimage=magnifySizeImage(newbackimage,450,450);//背景画像加工 //450*450
 			//newbackimage=getgrayImage(newbackimage);
 			BufferedImage synimg=newbackimage;
 			//BufferedImage synimg=bufferImage;
 			Random rnd = new Random(getHaikukey(str));
 			
 			for(int i=0;i<img.length;i++){
-			BufferedImage bimg=SwingFXUtils.fromFXImage(img[i], null);
-			bimg=magnifySizeImage(bimg,compsize,compsize);//コンポーネント画像加工
-			bimg=getgrayImage(bimg);
-			java.awt.Image afterimg=CircleImage(bimg);
+				BufferedImage bimg=SwingFXUtils.fromFXImage(img[i], null);
+				bimg=magnifySizeImage(bimg,compsize,compsize);//コンポーネント画像加工
+				bimg=getgrayImage(bimg);
+				java.awt.Image afterimg=CircleImage(bimg);
 			
-			int x=rnd.nextInt(450-compsize); //座標のランダム生成
-			int y=rnd.nextInt(450-compsize);
+				int x=rnd.nextInt(450-compsize); //座標のランダム生成
+				int y=rnd.nextInt(450-compsize);
 			
-			haikuimage=SwingFXUtils.toFXImage(synimg, null);
-			synimg=synthesizeImage(synimg,afterimg,x,y); //合成
-			synimg=DrawString(synimg,str);
-			}
-			newbackimage=magnifySizeImage(backimage,450,450);//背景画像加工 //450*450
-			synimg=getAlphaImage(synimg,newbackimage);
+				synimg=synthesizeImage(synimg,afterimg,x,y); //合成
+				}
+			//synimg=getAlphaImage(synimg,newbackimage);
 			//synimg=AlphaChange(newbackimage,0);
 			//Image Haikuimg=SwingFXUtils.toFXImage(synimg, null);
+			haikuimage=SwingFXUtils.toFXImage(synimg, null);
+			synimg=DrawString(synimg,str);
 			haikuimageWithStr=SwingFXUtils.toFXImage(synimg, null);
 			//return Haikuimg;
 			
@@ -358,13 +333,90 @@ public class ImageUtil {
 			return key;
 		}
 		
-		public static Image getHaikuimg(){
+		public static Image getHaikuimg(){//俳句なし画像を返す
 			return haikuimage;
 		}
 		
-		public static Image gethaikuimgWithstr(){
+		public static Image gethaikuimgWithstr(){//俳句付き画像を返す
 			return haikuimageWithStr;
 		}
+		
+		private static void resetHaikuImage(){//2種の俳句画像リセット
+			haikuimage=null;
+			haikuimageWithStr=null;
+		}
+		
+		public static BufferedImage alphatest(BufferedImage org){
+			int w = org.getWidth();
+			int h = org.getHeight();
+			BufferedImage dst = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+			for (int y=0; y<h; y++) {
+				for (int x=0; x<w; x++) {
+					if (org.getRGB(x, y) == 0xFFFFFFFF) {//ピンク
+						dst.setRGB(x, y, 0);//透明
+					}
+					else {
+						dst.setRGB(x, y, org.getRGB(x, y));
+					}
+				}
+			}
+			return dst;
+
+		}
+		
+		public static java.awt.Image WCImagemodify(Image img,Image backimg){//途中 ワードクラウドの画像処理
+			BufferedImage bimg=SwingFXUtils.fromFXImage(img, null);
+			bimg=magnifySizeImage(bimg,450,450);
+			int width = bimg.getWidth(null);
+			int height = bimg.getHeight(null);
+			int[] pixel = new int[width*height];
+			PixelGrabber pg = new PixelGrabber(bimg,0,0,width,height,pixel,0,width);
+			try {
+				pg.grabPixels();
+			} catch (InterruptedException e) {
+				return null;
+			}
+
+			int whiteRGB=Color.WHITE.getRGB();
+			
+			/*
+			for(int i=0;i<width*height;i++){//白に近い色を白にする
+				if ((255-r(pixel[i]))+(255-r(pixel[i]))+(255-r(pixel[i]))<20) {
+					pixel[i]=whiteRGB;
+				}
+			}
+			//*/
+
+			for(int i=0;i<width*height;i++){//白透過
+				if (pixel[i] == whiteRGB) {
+					pixel[i]=pixel[i]&0x00FFFFFF;
+				}
+			}
+			java.awt.Image alphaImage = Toolkit.getDefaultToolkit().createImage(new MemoryImageSource(width, height, pixel, 0, width));
+			
+			BufferedImage newbackimage=SwingFXUtils.fromFXImage(backimg, null);
+			newbackimage=magnifySizeImage(newbackimage,450,450);
+			
+			int[] bpixel = new int[width*height];
+			PixelGrabber bpg = new PixelGrabber(newbackimage,0,0,width,height,bpixel,0,width);
+			try {
+				bpg.grabPixels();
+			} catch (InterruptedException e) {
+				return null;
+			}
+			
+			for(int i=0;i<width*height;i++){//白透過
+				bpixel[i]=pixel[i]&0xFFFFFFFF;
+			}
+			java.awt.Image backalphaImage = Toolkit.getDefaultToolkit().createImage(new MemoryImageSource(width, height, bpixel, 0, width));
+			
+			
+			return (java.awt.Image)synthesizeImage(backalphaImage,alphaImage,0,0);
+			
+			
+			
+		}
+		
 
 		    public static int a(int c){
 		        return c>>>24;
