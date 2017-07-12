@@ -89,7 +89,7 @@
                   <HBox alignment="CENTER" spacing="10.0">
                      <children>
                         <Button fx:id="left" mnemonicParsing="false" text="⇦" />
-                        <TextField fx:id="input" focusTraversable="false" prefColumnCount="14" />
+                        <TextField fx:id="input" focusTraversable="false" onKeyPressed="#onKeyPressed" prefColumnCount="14" />
                         <Button fx:id="right" mnemonicParsing="false" text="⇨" />
                      </children>
                   </HBox>

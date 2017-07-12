@@ -9,6 +9,8 @@ import javafx.scene.control.Label
 import javafx.scene.control.TextField
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
+import javafx.scene.input.KeyCode
+import javafx.scene.input.KeyEvent
 import jp.ac.ynu.pl2017.groupj.gui.TransitionModalPane
 import jp.ac.ynu.pl2017.groupj.gui.TransitionPane
 import jp.ac.ynu.pl2017.groupj.gui.product.Product
@@ -40,6 +42,7 @@ class Haiku : Initializable, TransitionPane, TransitionModalPane {
         val outputs = arrayOf(output1, output2, output3)
         val marks = arrayOf(mark1, mark2, mark3)
         val brush = Image(javaClass.classLoader.getResourceAsStream("image/brush.png"))
+        outputs.forEachIndexed { i, output -> output.setOnMouseClicked { index.value = i } }
         marks.forEachIndexed { i, mark ->
             mark.visibleProperty().bind(index.isEqualTo(i))
             mark.image = brush
@@ -52,10 +55,18 @@ class Haiku : Initializable, TransitionPane, TransitionModalPane {
         index.addListener { _, oldValue, newValue ->
             input.textProperty().unbindBidirectional(outputs[oldValue.toInt()].textProperty())
             input.textProperty().bindBidirectional(outputs[newValue.toInt()].textProperty())
+            input.positionCaret(outputs[newValue.toInt()].text.length)
         }
         model.haiku.bind(Bindings.concat(output1.textProperty(), System.lineSeparator(),
                                          output2.textProperty(), System.lineSeparator(),
                                          output3.textProperty()))
+    }
+
+    @FXML fun onKeyPressed(event: KeyEvent) {
+        if (event.code == KeyCode.ENTER) {
+            if (index.value < 2)
+                index.value += 1
+        }
     }
 
     @FXML fun onClickSetting() {
