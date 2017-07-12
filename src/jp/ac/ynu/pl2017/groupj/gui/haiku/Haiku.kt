@@ -61,11 +61,11 @@ class Haiku : Initializable, TransitionPane, TransitionModalPane {
     }
 
     @FXML fun onClickGenerate() {
-        model.generateImage()
-        // とりあえず夏と適当な画像を指定
-        setPane(Product(model.haiku.value, Season.SUMMER,
-                Image(javaClass.classLoader.getResourceAsStream("image/test1.png")),
-                Image(javaClass.classLoader.getResourceAsStream("image/test2.png"))))
+        // TODO: 進捗を表示できるようにする
+        model.analyze()
+        val (image, imageWithHaiku) = model.generateImage()
+        // とりあえず夏
+        setPane(Product(model.haiku.value, Season.SUMMER, image, imageWithHaiku))
     }
 
     @FXML fun onClickWordCloud() {

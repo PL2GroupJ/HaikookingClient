@@ -27,13 +27,13 @@ class Tweet(val haiku: String, val season: Season, val image: Image) : Initializ
     @FXML lateinit var attachImage: ToggleButton
     @FXML lateinit var restLabel: Label
     private val restWord = SimpleIntegerProperty()
+    private val noImage = Image(javaClass.classLoader.getResourceAsStream("image/no_image.png"))
 
     override fun initialize(location: URL?, resources: ResourceBundle?) {
         restWord.bind(tweetArea.textProperty().length().subtract(140).negate())
         userName.text = User.twitter!!.name
         tweetArea.text = haiku + System.lineSeparator() + System.lineSeparator() + "#haikooking #$season"
-        thumbnail.image = image
-        thumbnail.visibleProperty().bind(attachImage.selectedProperty())
+        thumbnail.imageProperty().bind(Bindings.`when`(attachImage.selectedProperty()).then(image).otherwise(noImage))
         restLabel.textProperty().bind(Bindings.concat("残り", restWord, "文字"))
         restLabel.textFillProperty().bind(Bindings.`when`(restWord.greaterThanOrEqualTo(0))
                                                   .then(Color.BLACK)

@@ -29,7 +29,7 @@ class Product(val haiku: String, val season: Season, val image: Image, val image
     private val login = SimpleBooleanProperty()    // OAuthの完了をバインドで検知する
 
     override fun initialize(location: URL?, resources: ResourceBundle?) {
-        haikuImage.imageProperty().bind(Bindings.`when`(textOn.selectedProperty()).then(imageWithHaiku).otherwise(image))
+        haikuImage.imageProperty().bind(Bindings.`when`(textOn.selectedProperty()).then(image).otherwise(imageWithHaiku))
     }
 
     @FXML fun onClickReturn() {
