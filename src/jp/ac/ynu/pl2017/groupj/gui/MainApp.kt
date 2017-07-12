@@ -6,12 +6,10 @@ import javafx.scene.Parent
 import javafx.scene.Scene
 import javafx.stage.Modality
 import javafx.stage.Stage
-import javafx.stage.StageStyle
 import jp.ac.ynu.pl2017.groupj.gui.title.Title
 import jp.ac.ynu.pl2017.groupj.net.TwitterAPI
 import jp.ac.ynu.pl2017.groupj.util.*
 import java.io.File
-import java.nio.file.Paths
 import java.util.*
 
 /**
@@ -20,10 +18,10 @@ import java.util.*
 class MainApp : Application() {
     private lateinit var stage: Stage
     private lateinit var modalStage: Stage
-    private val styles = arrayOf(Paths.get("res/css/spring.css").toUri().toString(),
-                                Paths.get("res/css/summer.css").toUri().toString(),
-                                Paths.get("res/css/autumn.css").toUri().toString(),
-                                Paths.get("res/css/winter.css").toUri().toString())
+    private val styles = arrayOf(javaClass.classLoader.getResource("css/spring.css").toString(),
+                                javaClass.classLoader.getResource("css/summer.css").toString(),
+                                javaClass.classLoader.getResource("css/autumn.css").toString(),
+                                javaClass.classLoader.getResource("css/winter.css").toString())
     private val defaultIndex = Calendar.getInstance().getSeason().ordinal
 
     override fun start(primaryStage: Stage) {
@@ -32,7 +30,7 @@ class MainApp : Application() {
         setPane(Title())
         stage.show()
         println("${User.twitter}")
-        println("${User.season}")
+        println("season = ${User.season}")
         println("advice = ${User.advice}")
     }
 

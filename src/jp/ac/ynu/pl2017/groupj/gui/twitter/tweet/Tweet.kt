@@ -29,18 +29,15 @@ class Tweet(val haiku: String, val season: Season, val image: Image) : Initializ
     private val restWord = SimpleIntegerProperty()
 
     override fun initialize(location: URL?, resources: ResourceBundle?) {
+        restWord.bind(tweetArea.textProperty().length().subtract(140).negate())
         userName.text = User.twitter!!.name
         tweetArea.text = haiku + System.lineSeparator() + System.lineSeparator() + "#haikooking #$season"
         thumbnail.image = image
         thumbnail.visibleProperty().bind(attachImage.selectedProperty())
         restLabel.textProperty().bind(Bindings.concat("残り", restWord, "文字"))
-        restWord.bind(tweetArea.textProperty().length().subtract(140).negate())
-        restWord.addListener { _, _, newValue ->
-            if (newValue.toInt() >= 0)
-                restLabel.textFill = Color.BLACK
-            else
-                restLabel.textFill = Color.RED
-        }
+        restLabel.textFillProperty().bind(Bindings.`when`(restWord.greaterThanOrEqualTo(0))
+                                                  .then(Color.BLACK)
+                                                  .otherwise(Color.RED))
     }
 
     @FXML fun onClickCancel() {

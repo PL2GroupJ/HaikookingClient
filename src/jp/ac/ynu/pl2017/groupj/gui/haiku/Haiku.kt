@@ -14,7 +14,6 @@ import jp.ac.ynu.pl2017.groupj.gui.product.Product
 import jp.ac.ynu.pl2017.groupj.gui.setting.Setting
 import jp.ac.ynu.pl2017.groupj.gui.word.WordCloud
 import jp.ac.ynu.pl2017.groupj.util.Season
-import java.io.File
 import java.net.URL
 import java.util.*
 
@@ -64,7 +63,9 @@ class Haiku : Initializable, TransitionPane, TransitionModalPane {
     @FXML fun onClickGenerate() {
         model.generateImage()
         // とりあえず夏と適当な画像を指定
-        setPane(Product(model.haiku.value, Season.SUMMER, Image(File("res/image/circle.png").inputStream())))
+        setPane(Product(model.haiku.value, Season.SUMMER,
+                Image(javaClass.classLoader.getResourceAsStream("image/test1.png")),
+                Image(javaClass.classLoader.getResourceAsStream("image/test2.png"))))
     }
 
     @FXML fun onClickWordCloud() {
