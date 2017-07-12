@@ -1,16 +1,16 @@
 package jp.ac.ynu.pl2017.groupj.gui.twitter.tweet
 
 import javafx.beans.binding.Bindings
-import javafx.beans.property.IntegerProperty
-import javafx.beans.property.SimpleIntegerProperty
 import javafx.fxml.FXML
 import javafx.fxml.Initializable
-import javafx.scene.control.*
+import javafx.scene.control.Alert
+import javafx.scene.control.Label
+import javafx.scene.control.TextArea
+import javafx.scene.control.ToggleButton
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.paint.Color
 import jp.ac.ynu.pl2017.groupj.gui.HidePane
-import jp.ac.ynu.pl2017.groupj.net.TwitterAPI
 import jp.ac.ynu.pl2017.groupj.util.Season
 import jp.ac.ynu.pl2017.groupj.util.User
 import java.net.URL
@@ -24,18 +24,23 @@ class Tweet(val haiku: String, val season: Season, val image: Image) : Initializ
     @FXML lateinit var userName: Label
     @FXML lateinit var tweetArea: TextArea  // Wrap textをオンにすると文字の位置がおかしくなる
     @FXML lateinit var thumbnail: ImageView
-    @FXML lateinit var attachImage: ToggleButton
+    @FXML lateinit var attachButton: ToggleButton
     @FXML lateinit var restLabel: Label
-    private val restWord = SimpleIntegerProperty()
     private val noImage = Image(javaClass.classLoader.getResourceAsStream("image/no_image.png"))
+    private val model = TweetModel()
 
     override fun initialize(location: URL?, resources: ResourceBundle?) {
-        restWord.bind(tweetArea.textProperty().length().subtract(140).negate())
+        model.run {
+            tweetText.bind(tweetArea.textProperty())
+            attaches.bind(attachButton.selectedProperty())
+        }
+
         userName.text = User.twitter!!.name
-        tweetArea.text = haiku + System.lineSeparator() + System.lineSeparator() + "#haikooking #$season"
-        thumbnail.imageProperty().bind(Bindings.`when`(attachImage.selectedProperty()).then(image).otherwise(noImage))
-        restLabel.textProperty().bind(Bindings.concat("残り", restWord, "文字"))
-        restLabel.textFillProperty().bind(Bindings.`when`(restWord.greaterThanOrEqualTo(0))
+        tweetArea.text = haiku + System.lineSeparator() + System.lineSeparator() + "#haikooking"
+        if (season != Season.DEFAULT) tweetArea.text += " #$season"
+        thumbnail.imageProperty().bind(Bindings.`when`(model.attaches).then(image).otherwise(noImage))
+        restLabel.textProperty().bind(Bindings.concat("残り", model.restWord, "文字"))
+        restLabel.textFillProperty().bind(Bindings.`when`(model.restWord.greaterThanOrEqualTo(0))
                                                   .then(Color.BLACK)
                                                   .otherwise(Color.RED))
     }
@@ -45,25 +50,21 @@ class Tweet(val haiku: String, val season: Season, val image: Image) : Initializ
     }
 
     @FXML fun onClickTweet() {
-        // ツイート上限文字数の140かどうかで処理を分岐
-        if (restWord.value >= 0) {
-            var mediaId = ""
-            if (attachImage.isSelected)
-                mediaId = TwitterAPI.uploadImage(User.twitter!!.tokenPair, image)
-            TwitterAPI.tweet(User.twitter!!.tokenPair, tweetArea.text, mediaId)
+        val tweeted = model.tweet(thumbnail.image)
+        if (tweeted) {
             Alert(Alert.AlertType.INFORMATION).apply {
-                contentText = "ツイートが完了しました"
-                headerText = null
                 title = "完了"
+                headerText = null
+                contentText = "ツイートが完了しました"
                 show()
             }
             hide()
         }
         else {
             Alert(Alert.AlertType.WARNING).apply {
-                contentText = "文字数を140文字以内にして下さい。"
-                headerText = null
                 title = "ツイートできません"
+                headerText = null
+                contentText = "文字数を140文字以内にして下さい。"
                 show()
             }
         }
