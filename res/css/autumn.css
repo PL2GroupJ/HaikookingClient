@@ -1,13 +1,14 @@
 .button {
-    -fx-text-fill: #FACD89;
+    -fx-text-fill: #bf8f00;
 
-    -fx-background-color: linear-gradient(#EB6100 0%, #E8380D 100%);
-    -fx-background-radius: 5;
+    /*-fx-background-color: linear-gradient(#EB6100 0%, #E8380D 100%);*/
+    -fx-background-radius: 20;
+   -fx-background-color: linear-gradient(#ffd65b, #e68400),linear-gradient(#ffef84, #f2ba44),linear-gradient(#ffea6a, #efaa22),linear-gradient(#ffe657 0%, #f8c202 50%, #eea10b 100%),linear-gradient(from 0% 0% to 15% 50%, rgba(255,255,255,0.9), rgba(255,255,255,0));
 }
 
 .toggle-button {
-    -fx-text-fill: #FACD89;
-
-    -fx-background-color: linear-gradient(#EB6100 0%, #E8380D 100%);
-    -fx-background-radius: 5;
+    -fx-text-fill: #bf8f00;
+    -fx-background-color: linear-gradient(#ffd65b, #e68400),linear-gradient(#ffef84, #f2ba44),linear-gradient(#ffea6a, #efaa22),linear-gradient(#ffe657 0%, #f8c202 50%, #eea10b 100%),linear-gradient(from 0% 0% to 15% 50%, rgba(255,255,255,0.9), rgba(255,255,255,0));
+	/*-fx-font: 12pt "Monospaced";*/
+    -fx-background-radius: 20;
 }

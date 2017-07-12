@@ -1,13 +1,14 @@
 .button {
     -fx-text-fill: white;
-
-    -fx-background-color: linear-gradient(#F7C8CE 0%, #F8C5AC 100%);
-    -fx-background-radius: 5;
+	-fx-text-shadow: 10px 10px 10px black;
+    -fx-background-color: linear-gradient(#F7C8CE 0%, #ff00ff 100%);
+    -fx-background-radius: 30;
+    -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.1) , 2, 0.0 , 0 , 1);
 }
 
 .toggle-button {
     -fx-text-fill: white;
-
-    -fx-background-color: linear-gradient(#F7C8CE 0%, #F8C5AC 100%);
-    -fx-background-radius: 5;
+    -fx-text-shadow: 5px 5px 5px gray;
+    -fx-background-color: linear-gradient(#f7c8ce 0%, #ff00ff 100%);
+    -fx-background-radius: 30;
 }
