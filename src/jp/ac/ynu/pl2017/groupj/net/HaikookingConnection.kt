@@ -2,6 +2,7 @@ package jp.ac.ynu.pl2017.groupj.net
 
 import javafx.scene.image.Image
 import jp.ac.ynu.pl2017.groupj.util.ConnectionCommand
+import jp.ac.ynu.pl2017.groupj.util.Season
 import jp.ac.ynu.pl2017.groupj.util.toImage
 import java.io.DataInputStream
 import java.io.DataOutputStream
@@ -32,6 +33,15 @@ class HaikookingConnection {
     fun writeHaiku(haiku: String) {
         sendCommand(ConnectionCommand.HAIKU)
         output!!.writeUTF(haiku)
+    }
+
+    /**
+     * 季語を受信する
+     * @return [Season]
+     */
+    fun readSeason(): Season {
+        sendCommand(ConnectionCommand.SEASON)
+        return Season.valueOf(input!!.readUTF())
     }
 
     /**
