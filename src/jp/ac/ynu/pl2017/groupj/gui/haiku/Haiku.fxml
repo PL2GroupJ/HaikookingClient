@@ -16,23 +16,19 @@
       <BorderPane prefHeight="200.0" prefWidth="200.0">
          <top>
             <BorderPane BorderPane.alignment="CENTER">
-               <right>
-                  <Button mnemonicParsing="false" onAction="#onClickSetting" text="設定(後で画像に差し替え)" BorderPane.alignment="CENTER">
-                     <BorderPane.margin>
-                        <Insets />
-                     </BorderPane.margin>
-                  </Button>
-               </right>
                <left>
-                  <Button mnemonicParsing="false" onAction="#onClickWordCloud" text="人気の季語を見る" BorderPane.alignment="CENTER">
+                  <Button mnemonicParsing="false" onAction="#onClickWordCloud" text="人気の季語を見る" BorderPane.alignment="TOP_LEFT">
                      <BorderPane.margin>
                         <Insets />
                      </BorderPane.margin>
                   </Button>
                </left>
                <BorderPane.margin>
-                  <Insets left="15.0" right="15.0" top="10.0" />
+                  <Insets left="15.0" right="10.0" top="10.0" />
                </BorderPane.margin>
+               <right>
+                  <ImageView fx:id="settingImage" fitHeight="35.0" fitWidth="35.0" onMouseClicked="#onClickSetting" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />
+               </right>
             </BorderPane>
          </top>
          <center>

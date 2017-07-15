@@ -35,6 +35,7 @@ class Haiku : Initializable, TransitionPane, TransitionModalPane {
     @FXML lateinit var mark3: ImageView
     @FXML lateinit var left: Button
     @FXML lateinit var right: Button
+    @FXML lateinit var settingImage: ImageView
     private val index = SimpleIntegerProperty(0)
     private val model = HaikuModel()
 
@@ -51,6 +52,7 @@ class Haiku : Initializable, TransitionPane, TransitionModalPane {
         right.disableProperty().bind(index.isEqualTo(0))
         left.setOnAction { index.value += 1 }
         right.setOnAction { index.value -= 1 }
+        settingImage.image = Image(javaClass.classLoader.getResourceAsStream("image/gear.png"))
         input.textProperty().bindBidirectional(output1.textProperty())
         index.addListener { _, oldValue, newValue ->
             input.textProperty().unbindBidirectional(outputs[oldValue.toInt()].textProperty())
