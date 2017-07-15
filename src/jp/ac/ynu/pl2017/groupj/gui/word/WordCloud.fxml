@@ -2,29 +2,50 @@
 
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.image.ImageView?>
 
-<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
+
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="620.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="20.0" tabMaxWidth="60.0" tabMinHeight="20.0" tabMinWidth="60.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
   <tabs>
-    <Tab text="累計">
-      <content>
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-      </content>
-    </Tab>
-      <Tab text="1週間">
-          <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-          </content>
-      </Tab>
-      <Tab text="1ヶ月">
-          <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-          </content>
-      </Tab>
-      <Tab text="季節">
-          <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-          </content>
-      </Tab>
+     <Tab text="累計">
+        <content>
+           <ImageView fx:id="total" fitHeight="600.0" fitWidth="600.0" pickOnBounds="true" preserveRatio="true" />
+        </content>
+     </Tab>
+     <Tab text="1週間">
+        <content>
+           <ImageView fx:id="week" fitHeight="600.0" fitWidth="600.0" pickOnBounds="true" preserveRatio="true" />
+        </content>
+     </Tab>
+     <Tab text="1ヶ月">
+        <content>
+           <ImageView fx:id="month" fitHeight="600.0" fitWidth="600.0" pickOnBounds="true" preserveRatio="true" />
+        </content>
+     </Tab>
+     <Tab text="春">
+        <content>
+           <ImageView fx:id="spring" fitHeight="600.0" fitWidth="600.0" pickOnBounds="true" preserveRatio="true" />
+        </content>
+     </Tab>
+     <Tab text="夏">
+        <content>
+           <ImageView fx:id="summer" fitHeight="600.0" fitWidth="600.0" pickOnBounds="true" preserveRatio="true" />
+        </content>
+     </Tab>
+     <Tab text="秋">
+        <content>
+           <ImageView fx:id="autumn" fitHeight="600.0" fitWidth="600.0" pickOnBounds="true" preserveRatio="true" />
+        </content>
+     </Tab>
+     <Tab text="冬">
+        <content>
+           <ImageView fx:id="winter" fitHeight="600.0" fitWidth="600.0" pickOnBounds="true" preserveRatio="true" />
+        </content>
+     </Tab>
+     <Tab text="新年">
+        <content>
+           <ImageView fx:id="newYear" fitHeight="600.0" fitWidth="600.0" pickOnBounds="true" preserveRatio="true" />
+        </content>
+     </Tab>
   </tabs>
 </TabPane>

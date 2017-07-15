@@ -64,14 +64,17 @@ class HaikookingConnection {
 
     /**
      * 画像を受信する。WordCloudの画像受信に利用。
-     * @return 画像
+     * @return 画像の配列
      */
-    fun readImage(): Image {
+    fun readImages(): Array<Image> {
         sendCommand(ConnectionCommand.IMAGE)
-        val size = input!!.readInt()
-        val bytes = ByteArray(size)
-        socket!!.getInputStream().read(bytes)
-        return bytes.toImage()
+        val inputStream = socket!!.getInputStream()
+        return (1..8).map {
+            val size = input!!.readInt()
+            val bytes = ByteArray(size)
+            inputStream.read(bytes)
+            bytes.toImage()
+        }.toTypedArray()
     }
 
     /**
