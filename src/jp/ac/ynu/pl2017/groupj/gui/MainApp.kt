@@ -1,16 +1,21 @@
 package jp.ac.ynu.pl2017.groupj.gui
 
 import javafx.application.Application
+import javafx.embed.swing.SwingFXUtils
 import javafx.fxml.FXMLLoader
 import javafx.scene.Parent
 import javafx.scene.Scene
+import javafx.scene.image.Image
+import javafx.stage.FileChooser
 import javafx.stage.Modality
 import javafx.stage.Stage
 import jp.ac.ynu.pl2017.groupj.gui.title.Title
 import jp.ac.ynu.pl2017.groupj.net.TwitterAPI
 import jp.ac.ynu.pl2017.groupj.util.*
+import java.awt.image.BufferedImage
 import java.io.File
 import java.util.*
+import javax.imageio.ImageIO
 
 /**
  * GUIのベースのクラス。Swingで言うところのJFrame。
@@ -56,6 +61,9 @@ class MainApp : Application() {
         if (controller is TransitionModalPane) {
             controller.newPane = this::newPane
         }
+        if (controller is SaveImagePane) {
+            controller.saveImage = this::saveImage
+        }
     }
 
     /**
@@ -81,7 +89,36 @@ class MainApp : Application() {
         }
     }
 
+    /**
+     * FileChooserを表示し、指定されたパスに画像を保存する。
+     * @param image 保存対象の画像[Image]
+     * @param name 保存時のデフォルトの名前
+     * @return 保存の可否
+     */
+    fun saveImage(image: Image, name: String): Boolean {
+        val extensionList = arrayOf("jpg", "png", "gif", "jpeg", "bmp") // wbmpは対応しているみたいだが、保存できなかった
+        val file = FileChooser().run {
+            title = "画像の保存"
+            initialFileName = name
+            extensionFilters.addAll(extensionList.map { FileChooser.ExtensionFilter(it.toUpperCase(), "*.$it") })
+            showSaveDialog(stage)
+        }
+        file ?: return false
+
+        if (file.extension in extensionList) {
+            val w = image.width.toInt()
+            val h = image.height.toInt()
+            // 透明度情報を消すためにBufferedImageに再書き込み
+            val oldBI = SwingFXUtils.fromFXImage(image, null)
+            val newBI = BufferedImage(w, h, BufferedImage.TYPE_3BYTE_BGR)
+            newBI.createGraphics().drawImage(oldBI, 0, 0, w, h, null)
+            ImageIO.write(newBI, file.extension, file)
+        }
+        return true
+    }
+
     private fun readProperties() {
+        // TODO: 通信処理が含まれているので、非同期にする
         if (!File(PROP).exists()) {
             File(PROP).createNewFile()
         }
@@ -110,11 +147,15 @@ class MainApp : Application() {
 }
 
 interface TransitionPane {
-    var setPane: ((Any) -> Unit)
+    var setPane: (Any) -> Unit
 }
 
 interface TransitionModalPane {
-    var newPane: ((Any) -> Unit)
+    var newPane: (Any) -> Unit
+}
+
+interface SaveImagePane {
+    var saveImage: (Image, String) -> Boolean
 }
 
 interface HidePane {
