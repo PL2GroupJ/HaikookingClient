@@ -81,13 +81,12 @@ object HttpUtils {
     }
 
     /**
-     * URLの画像をダウンロードする。
+     * URLの画像をダウンロードする。URLによってはダウンロードできない場合もあることに注意。
      * @param urlString ダウンロードする画像のURLの文字列
      * @return その画像の[Image]のインスタンス
      */
     @JvmStatic fun downloadImage(urlString: String): Image? {
         val url = URL(urlString)
-        // TODO: Httpの場合に正しく読み込まれないバグあり。要修正
         val con = when (url.protocol) {
             "http" -> url.openConnection() as HttpURLConnection
             "https" -> url.openConnection() as HttpsURLConnection
