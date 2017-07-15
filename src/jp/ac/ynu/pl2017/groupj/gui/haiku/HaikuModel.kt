@@ -22,7 +22,7 @@ class HaikuModel {
         // 自サーバとの通信
 //        val con = HaikookingConnection()
 //        con.writeHaiku(haiku.value)
-        nounList = listOf("image/back.jpg", "image/test1.jpg", "image/test2.jpg")//con.readNounList()
+        nounList = listOf("image/test/test_back.jpg", "image/test/test1.jpg", "image/test/test2.jpg")//con.readNounList()
         advice = "これはアドバイスです"//con.readAdvice()
 //        con.closeConnection()
     }

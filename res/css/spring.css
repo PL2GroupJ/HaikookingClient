@@ -1,3 +1,7 @@
+.root {
+    -fx-background-image: url("../image/test/back.png");
+}
+
 .button {
     -fx-text-fill: white;
 	/*-fx-text-shadow: 10px 10px 10px black;*/

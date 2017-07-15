@@ -15,8 +15,8 @@ class TitleModel(val graphics: GraphicsContext) {
      */
     fun draw() {
         graphics.run {
-            fill = Color.GREEN
-            fillRect(0.0, 0.0, w, h)
+//            fill = Color.GREEN
+//            fillRect(0.0, 0.0, w, h)
         }
     }
 }
