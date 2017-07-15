@@ -2,9 +2,8 @@ package jp.ac.ynu.pl2017.groupj.gui.haiku
 
 import javafx.beans.property.SimpleStringProperty
 import javafx.scene.image.Image
-import jp.ac.ynu.pl2017.groupj.net.GoogleSearch
-import jp.ac.ynu.pl2017.groupj.net.HaikookingConnection
 import jp.ac.ynu.pl2017.groupj.util.ImageUtil
+import jp.ac.ynu.pl2017.groupj.util.getResourceAsImage
 import java.util.*
 
 /**
@@ -34,10 +33,10 @@ class HaikuModel {
         val random = Random()
 //        nounList  名詞のリストの加工。[背景, その他名詞複数]になるように
 //        val backLink = GoogleSearch.search(nounList[0])[random.nextInt(10)].link
-        val backImage = Image(javaClass.classLoader.getResourceAsStream(nounList[0]))//Image(backLink)
+        val backImage = nounList[0].getResourceAsImage()//Image(backLink)
         val images = nounList.drop(1).map {
 //            val link = GoogleSearch.search(it)[random.nextInt(10)].link
-            Image(javaClass.classLoader.getResourceAsStream(it))//Image(link)
+            it.getResourceAsImage()//Image(link)
         }
         ImageUtil.createHaikuImage(200, backImage, images.toTypedArray(), haiku.value.split(System.lineSeparator()).toTypedArray())
         return ImageUtil.getHaikuimg() to ImageUtil.gethaikuimgWithstr()

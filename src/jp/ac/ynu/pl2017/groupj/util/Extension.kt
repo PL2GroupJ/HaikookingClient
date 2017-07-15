@@ -32,8 +32,7 @@ fun Properties.write(propertyFile: String, vararg keyAndValues: Pair<String, Str
     FileInputStream(MainApp.PROP).use {
         load(it)
         keyAndValues.forEach { (key, value) -> setProperty(key, value) }
-        store(FileOutputStream(propertyFile),
-                "add or update:${keyAndValues.map { (key, _) -> key }.joinToString(separator = ", ")}")
+        FileOutputStream(propertyFile).use { store(it, "add or update:${keyAndValues.map { (key, _) -> key }.joinToString(separator = ", ")}") }
     }
 }
 
@@ -46,7 +45,7 @@ fun Properties.delete(propertyFile: String, vararg keys: String) {
     FileInputStream(propertyFile).use {
         load(it)
         keys.forEach { remove(it) }
-        store(FileOutputStream(MainApp.PROP), "delete:${keys.joinToString(separator = ", ")}")
+        FileOutputStream(MainApp.PROP).use { store(it, "delete:${keys.joinToString(separator = ", ")}") }
     }
 }
 
@@ -84,3 +83,9 @@ fun ByteArray.toImage(): Image {
     val bufferedImage = ImageIO.read(ByteArrayInputStream(this))
     return SwingFXUtils.toFXImage(bufferedImage, null)
 }
+
+/**
+ * 文字列が示すリソースを[Image]に変換する
+ * @return リソースが示すイメージ
+ */
+fun String.getResourceAsImage(): Image = MainApp::class.java.classLoader.getResourceAsStream(this).use { Image(it) }

@@ -13,6 +13,7 @@ import javafx.scene.paint.Color
 import jp.ac.ynu.pl2017.groupj.gui.HidePane
 import jp.ac.ynu.pl2017.groupj.util.Season
 import jp.ac.ynu.pl2017.groupj.util.User
+import jp.ac.ynu.pl2017.groupj.util.getResourceAsImage
 import java.net.URL
 import java.util.*
 
@@ -26,7 +27,7 @@ class Tweet(val haiku: String, val season: Season, val image: Image) : Initializ
     @FXML lateinit var thumbnail: ImageView
     @FXML lateinit var attachButton: ToggleButton
     @FXML lateinit var restLabel: Label
-    private val noImage = Image(javaClass.classLoader.getResourceAsStream("image/no_image.png"))
+    private val noImage = "image/no_image.png".getResourceAsImage()
     private val model = TweetModel()
 
     override fun initialize(location: URL?, resources: ResourceBundle?) {

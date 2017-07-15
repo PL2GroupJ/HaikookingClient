@@ -10,8 +10,6 @@ import jp.ac.ynu.pl2017.groupj.gui.MainApp
 import jp.ac.ynu.pl2017.groupj.net.TwitterAPI
 import jp.ac.ynu.pl2017.groupj.util.User
 import jp.ac.ynu.pl2017.groupj.util.write
-import java.io.FileInputStream
-import java.io.FileOutputStream
 import java.net.URL
 import java.util.*
 

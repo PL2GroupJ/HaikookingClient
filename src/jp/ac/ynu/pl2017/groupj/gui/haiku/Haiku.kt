@@ -7,7 +7,6 @@ import javafx.fxml.Initializable
 import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.control.TextField
-import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyEvent
@@ -17,6 +16,7 @@ import jp.ac.ynu.pl2017.groupj.gui.product.Product
 import jp.ac.ynu.pl2017.groupj.gui.setting.Setting
 import jp.ac.ynu.pl2017.groupj.gui.word.WordCloud
 import jp.ac.ynu.pl2017.groupj.util.Season
+import jp.ac.ynu.pl2017.groupj.util.getResourceAsImage
 import java.net.URL
 import java.util.*
 
@@ -42,7 +42,7 @@ class Haiku : Initializable, TransitionPane, TransitionModalPane {
     override fun initialize(location: URL?, resources: ResourceBundle?) {
         val outputs = arrayOf(output1, output2, output3)
         val marks = arrayOf(mark1, mark2, mark3)
-        val brush = Image(javaClass.classLoader.getResourceAsStream("image/brush.png"))
+        val brush = "image/brush.png".getResourceAsImage()
         outputs.forEachIndexed { i, output -> output.setOnMouseClicked { index.value = i } }
         marks.forEachIndexed { i, mark ->
             mark.visibleProperty().bind(index.isEqualTo(i))
@@ -52,7 +52,7 @@ class Haiku : Initializable, TransitionPane, TransitionModalPane {
         right.disableProperty().bind(index.isEqualTo(0))
         left.setOnAction { index.value += 1 }
         right.setOnAction { index.value -= 1 }
-        settingImage.image = Image(javaClass.classLoader.getResourceAsStream("image/gear.png"))
+        settingImage.image = "image/gear.png".getResourceAsImage()
         input.textProperty().bindBidirectional(output1.textProperty())
         index.addListener { _, oldValue, newValue ->
             input.textProperty().unbindBidirectional(outputs[oldValue.toInt()].textProperty())
