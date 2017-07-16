@@ -1,6 +1,7 @@
 package jp.ac.ynu.pl2017.groupj.util
 
 import javafx.embed.swing.SwingFXUtils
+import javafx.scene.control.Tooltip
 import javafx.scene.image.Image
 import jp.ac.ynu.pl2017.groupj.gui.MainApp
 import java.io.ByteArrayInputStream
@@ -89,3 +90,10 @@ fun ByteArray.toImage(): Image {
  * @return リソースが示すイメージ
  */
 fun String.getResourceAsImage(): Image = MainApp::class.java.classLoader.getResourceAsStream(this).use { Image(it) }
+
+/**
+ * [Tooltip]に非表示機能が無いため追加。内部ではopacityを変化させることで、表示・非表示を切り替えている
+ */
+var Tooltip.isVisible: Boolean
+    get() = opacity == 1.0
+    set(value) = if (value) opacity = 1.0 else opacity = 0.0

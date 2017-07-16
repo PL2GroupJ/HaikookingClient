@@ -5,6 +5,7 @@ import javafx.beans.property.SimpleBooleanProperty
 import javafx.fxml.FXML
 import javafx.fxml.Initializable
 import javafx.scene.control.ToggleButton
+import javafx.scene.control.Tooltip
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.input.Clipboard
@@ -18,23 +19,28 @@ import jp.ac.ynu.pl2017.groupj.gui.twitter.tweet.Tweet
 import jp.ac.ynu.pl2017.groupj.net.TwitterAPI
 import jp.ac.ynu.pl2017.groupj.util.Season
 import jp.ac.ynu.pl2017.groupj.util.User
+import jp.ac.ynu.pl2017.groupj.util.isVisible
 import java.net.URL
 import java.util.*
-
 
 /**
  * 俳句確認画面のコントローラー。出来上がった画像の確認、保存、ツイートができる。
  */
-class Product(val haiku: String, val season: Season, val image: Image, val imageWithHaiku: Image) : Initializable, TransitionPane, TransitionModalPane, SaveImagePane {
+class Product(val haiku: String, val season: Season, val advice: String, val image: Image, val imageWithHaiku: Image) : Initializable, TransitionPane, TransitionModalPane, SaveImagePane {
     override lateinit var setPane: (Any) -> Unit
     override lateinit var newPane: (Any) -> Unit
     override lateinit var saveImage: (Image, String) -> Boolean
     @FXML lateinit var haikuImage: ImageView
+    @FXML lateinit var toolTip: Tooltip
     @FXML lateinit var textOn: ToggleButton
     private val login = SimpleBooleanProperty()    // OAuthの完了をバインドで検知する
 
     override fun initialize(location: URL?, resources: ResourceBundle?) {
         haikuImage.imageProperty().bind(Bindings.`when`(textOn.selectedProperty()).then(image).otherwise(imageWithHaiku))
+        toolTip.run {
+            text = advice
+            isVisible = User.advice
+        }
     }
 
     @FXML fun onClickTweet() {

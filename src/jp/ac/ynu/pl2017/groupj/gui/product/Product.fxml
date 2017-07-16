@@ -6,12 +6,13 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
 
-
-<BorderPane prefHeight="200.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane prefHeight="600.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
    <bottom>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="70.0" BorderPane.alignment="CENTER">
          <children>
@@ -37,6 +38,12 @@
          <graphic>
             <ImageView fx:id="haikuImage" fitHeight="450.0" fitWidth="450.0" pickOnBounds="true" preserveRatio="true" />
          </graphic>
+         <tooltip>
+            <Tooltip fx:id="toolTip">
+               <font>
+                  <Font size="16.0" />
+               </font></Tooltip>
+         </tooltip>
       </Label>
    </center>
 </BorderPane>

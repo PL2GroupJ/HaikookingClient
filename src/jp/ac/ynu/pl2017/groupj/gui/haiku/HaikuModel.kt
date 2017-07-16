@@ -3,6 +3,7 @@ package jp.ac.ynu.pl2017.groupj.gui.haiku
 import javafx.beans.property.SimpleStringProperty
 import javafx.scene.image.Image
 import jp.ac.ynu.pl2017.groupj.util.ImageUtil
+import jp.ac.ynu.pl2017.groupj.util.Season
 import jp.ac.ynu.pl2017.groupj.util.getResourceAsImage
 import java.util.*
 
@@ -11,8 +12,9 @@ import java.util.*
  */
 class HaikuModel {
     val haiku = SimpleStringProperty()
-    private lateinit var nounList: List<String>
     lateinit var advice: String
+    lateinit var season: Season
+    private lateinit var nounList: List<String>
 
     /**
      * サーバに俳句を送信し、解析結果を受け取る。このクラスの他のメソッドの利用前にかならず呼び出す必要がある。
@@ -23,6 +25,7 @@ class HaikuModel {
 //        con.writeHaiku(haiku.value)
         nounList = listOf("image/test/test_back.jpg", "image/test/test1.jpg", "image/test/test2.jpg")//con.readNounList()
         advice = "これはアドバイスです"//con.readAdvice()
+        season = Season.AUTUMN//con.readSeason()
 //        con.closeConnection()
     }
 

@@ -80,7 +80,7 @@ class Haiku : Initializable, TransitionPane, TransitionModalPane {
         model.analyze()
         val (image, imageWithHaiku) = model.generateImage()
         // とりあえず夏
-        setPane(Product(model.haiku.value, Season.SUMMER, image, imageWithHaiku))
+        setPane(Product(model.haiku.value, model.season, model.advice, image, imageWithHaiku))
     }
 
     @FXML fun onClickWordCloud() {
