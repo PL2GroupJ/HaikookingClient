@@ -121,16 +121,16 @@ class MainApp : Application() {
         if (!File(PROP).exists()) {
             File(PROP).createNewFile()
         }
-        val props = Properties().read(PROP, TOKEN, TOKEN_SECRET, SEASON, ADVICE)
-        if (!props[0].isNullOrEmpty() && !props[1].isNullOrEmpty()) {
-            val tokenPair = TokenPair(props[0]!!, props[1]!!)
+        val propMap = Properties().read(PROP, TOKEN, TOKEN_SECRET, SEASON, ADVICE)
+        if (!propMap[TOKEN].isNullOrEmpty() && !propMap[TOKEN_SECRET].isNullOrEmpty()) {
+            val tokenPair = TokenPair(propMap[TOKEN]!!, propMap[TOKEN_SECRET]!!)
             User.twitter = TwitterAPI.loadUser(tokenPair)
         }
-        if (!props[2].isNullOrEmpty()) {
-            User.season = Season.valueOf(props[2]!!)
+        if (!propMap[SEASON].isNullOrEmpty()) {
+            User.season = Season.valueOf(propMap[SEASON]!!)
         }
-        if (!props[3].isNullOrEmpty()) {
-            User.advice = props[3]!!.toBoolean()
+        if (!propMap[ADVICE].isNullOrEmpty()) {
+            User.advice = propMap[ADVICE]!!.toBoolean()
         }
     }
 

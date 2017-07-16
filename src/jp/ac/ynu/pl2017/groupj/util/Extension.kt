@@ -14,12 +14,12 @@ import javax.imageio.ImageIO
  * プロパティファイルを読み込んで、リストとして返す。
  * @param propertyFile 対象のプロパティファイルの名前
  * @param keys 読み込みたいプロパティのキーの可変長配列
- * @return keysに対応した順で読み込んだ、プロパティの値のリスト
+ * @return keysに対応した順で読み込んだ、プロパティの値のマップ
  */
-fun Properties.read(propertyFile: String, vararg keys: String): List<String?> {
+fun Properties.read(propertyFile: String, vararg keys: String): Map<String, String> {
     FileInputStream(propertyFile).use {
         load(it)
-        return keys.map { getProperty(it) }
+        return keys.associate { it to getProperty(it) }
     }
 }
 
