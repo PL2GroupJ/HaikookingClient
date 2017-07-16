@@ -10,6 +10,8 @@ import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyEvent
+import javafx.scene.layout.Pane
+import javafx.scene.layout.VBox
 import jp.ac.ynu.pl2017.groupj.gui.TransitionModalPane
 import jp.ac.ynu.pl2017.groupj.gui.TransitionPane
 import jp.ac.ynu.pl2017.groupj.gui.product.Product
@@ -33,6 +35,9 @@ class Haiku : Initializable, TransitionPane, TransitionModalPane {
     @FXML lateinit var mark1: ImageView
     @FXML lateinit var mark2: ImageView
     @FXML lateinit var mark3: ImageView
+    @FXML lateinit var box1: VBox
+    @FXML lateinit var box2: VBox
+    @FXML lateinit var box3: VBox
     @FXML lateinit var left: Button
     @FXML lateinit var right: Button
     @FXML lateinit var settingImage: ImageView
@@ -42,8 +47,9 @@ class Haiku : Initializable, TransitionPane, TransitionModalPane {
     override fun initialize(location: URL?, resources: ResourceBundle?) {
         val outputs = arrayOf(output1, output2, output3)
         val marks = arrayOf(mark1, mark2, mark3)
+        val boxes = arrayOf(box1, box2, box3)
         val brush = "image/brush.png".getResourceAsImage()
-        outputs.forEachIndexed { i, output -> output.setOnMouseClicked { index.value = i } }
+        boxes.forEachIndexed { i, box -> box.setOnMouseClicked { index.value = i } }
         marks.forEachIndexed { i, mark ->
             mark.visibleProperty().bind(index.isEqualTo(i))
             mark.image = brush
