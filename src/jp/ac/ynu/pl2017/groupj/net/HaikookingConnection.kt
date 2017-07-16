@@ -6,6 +6,7 @@ import jp.ac.ynu.pl2017.groupj.util.Season
 import jp.ac.ynu.pl2017.groupj.util.toImage
 import java.io.DataInputStream
 import java.io.DataOutputStream
+import java.net.ConnectException
 import java.net.Socket
 
 /**
@@ -14,17 +15,10 @@ import java.net.Socket
 class HaikookingConnection {
     private val ip = "localhost"
     private val port = 9999
-    private val socket: Socket?
-    private val input: DataInputStream?
-    private val output: DataOutputStream?
+    private var socket: Socket? = null
+    private var input: DataInputStream? = null
+    private var output: DataOutputStream? = null
     private val separator = ":*:"
-
-    init {
-        socket = Socket(ip, port)
-        input = DataInputStream(socket.getInputStream())
-        output = DataOutputStream(socket.getOutputStream())
-        // TODO: 送信失敗時などの処理を追加する
-    }
 
     /**
      * 俳句を送信する。
@@ -78,6 +72,24 @@ class HaikookingConnection {
     }
 
     /**
+     * 接続する。
+     * @return 接続の可否
+     */
+    fun openConnection(): Boolean {
+        try { socket = Socket(ip, port) }
+        catch (e: ConnectException) {
+            // 接続が失敗した場合
+            socket?.close()
+            println("connection failed")
+            return false
+        }
+        input = DataInputStream(socket!!.getInputStream())
+        output = DataOutputStream(socket!!.getOutputStream())
+        println("open connection : $socket")
+        return true
+    }
+
+    /**
      * 接続を切断する。通信終了時に必ず呼ばなければならない。
      */
     fun closeConnection() {
@@ -85,6 +97,7 @@ class HaikookingConnection {
         input?.close()
         output?.close()
         socket?.close()
+        println("close connection : $socket")
     }
 
     // 処理分岐のコマンド送信

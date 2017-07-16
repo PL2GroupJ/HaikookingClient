@@ -118,7 +118,6 @@ class MainApp : Application() {
     }
 
     private fun readProperties() {
-        // TODO: 通信処理が含まれているので、非同期にする
         if (!File(PROP).exists()) {
             File(PROP).createNewFile()
         }
