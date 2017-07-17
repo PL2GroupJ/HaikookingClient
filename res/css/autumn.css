@@ -1,3 +1,7 @@
+.root {
+    -fx-background-image: url("../image/backimage/autumnback.jpg");
+}
+
 .button {
     -fx-text-fill: #bf8f00;
 

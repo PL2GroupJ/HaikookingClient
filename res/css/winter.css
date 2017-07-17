@@ -1,3 +1,7 @@
+.root {
+    -fx-background-image: url("../image/backimage/winterback.jpg");
+}
+
 .button {
 	-fx-text-fill: #0000ff;
 

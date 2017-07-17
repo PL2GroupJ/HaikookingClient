@@ -1,3 +1,7 @@
+.root {
+    -fx-background-image: url("../image/backimage/summerback.jpg");
+}
+
 .button {
     -fx-text-fill: white;
 
