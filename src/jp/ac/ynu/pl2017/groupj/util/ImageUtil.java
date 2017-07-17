@@ -86,9 +86,9 @@ public class ImageUtil {
 			Image wcView=SwingFXUtils.toFXImage(wctest,null);
 			Image backimagefx=SwingFXUtils.toFXImage(backimage,null);
 			java.awt.Image wcs=WCImagemodify(wcView,backimagefx);
-			String[] Haiku={"古池や","かえる飛び込む","水の音"};
+			String[] Haiku={"古池や","蛙飛び込む","水の音"};
 			Image Haikuimg=null;
-			createHaikuImage(150,backimagefx,fximg,Haiku,"spring");
+			createHaikuImage(150,backimagefx,fximg,Haiku);
 			synimg=SwingFXUtils.fromFXImage(gethaikuimgWithstr(), null);//俳句付き画像
 			//synimg=SwingFXUtils.fromFXImage(getHaikuimg(), null); //俳句なし画像表示テスト用
 			
@@ -388,6 +388,7 @@ public class ImageUtil {
 			
 				synimg=synthesizeImage(synimg,afterimg,x,y); //合成
 				}
+			synimg=createBufferedImage(framedImage(synimg));
 			//synimg=getAlphaImage(synimg,newbackimage);
 			//synimg=AlphaChange(newbackimage,0);
 			//Image Haikuimg=SwingFXUtils.toFXImage(synimg, null);
@@ -564,23 +565,52 @@ public class ImageUtil {
 			for(int i=0;i<width*height;i++){//白透過
 				if(pixel[i]==blackRGB){
 					if(i+height*3<height*width)	{
-						for(int j=1;j<4;j++){
-							if(pixel[i+height*j]!=blackRGB&&i+height*j<=width*height)	pixel[i+height*j]=whiteRGB;
-							if(pixel[i-height*j]!=blackRGB&&i-height*j>=width*height)	pixel[i-height*j]=whiteRGB;
-							if(pixel[i-1*j]!=blackRGB&&i+1*j<=width*height)	pixel[i-1*j]=whiteRGB;
-							if(pixel[i+1*j]!=blackRGB&&i-1*j>=width*height)	pixel[i+1*j]=whiteRGB;
-							if(pixel[i+height+1]!=blackRGB&&i+height+1<=width*height)	pixel[i+height+1]=whiteRGB;
-							if(pixel[i+height-1]!=blackRGB&&i+height-1<=width*height)	pixel[i+height-1]=whiteRGB;
-							if(pixel[i-height+1]!=blackRGB&&i-height+1>=width*height)	pixel[i-height+1]=whiteRGB;
-							if(pixel[i-height-1]!=blackRGB&&i-height+1>=width*height)	pixel[i-height-1]=whiteRGB;
+							if(i+height<width*height) if(pixel[i+height]!=blackRGB)	pixel[i+height]=whiteRGB;
+							if(i-height>=0) if(pixel[i-height]!=blackRGB)	pixel[i-height]=whiteRGB;
+							if(i!=0) if(pixel[i-1]!=blackRGB)	pixel[i-1]=whiteRGB;
+							if(i+1<width*height) if(pixel[i+1]!=blackRGB)	pixel[i+1]=whiteRGB;
+							if(i+height+1<width*height)if(pixel[i+height+1]!=blackRGB)	pixel[i+height+1]=whiteRGB;
+							if(i+height-1<width*height) if(pixel[i+height-1]!=blackRGB)	pixel[i+height-1]=whiteRGB;
+							if(i-height+1>=0)if(pixel[i-height+1]!=blackRGB)	pixel[i-height+1]=whiteRGB;
+							if(i-height-1>=0) if(pixel[i-height-1]!=blackRGB)	pixel[i-height-1]=whiteRGB;
 							}
 						}
 				}
-			}
 			java.awt.Image alphaImage = Toolkit.getDefaultToolkit().createImage(new MemoryImageSource(width, height, pixel, 0, width));
 			return alphaImage;
 		}
 		
+		private static java.awt.Image framedImage(java.awt.Image img){
+			int width = img.getWidth(null);
+			int height = img.getHeight(null);
+			int[] pixel = new int[width*height];
+			int[] framepixel=new int[450*450];
+			PixelGrabber pg = new PixelGrabber(img,0,0,width,height,pixel,0,width);
+			try {
+				pg.grabPixels();
+			} catch (InterruptedException e) {
+				return null;
+			}
+			BufferedImage frameimg=null;
+			
+			try{
+				frameimg=ImageIO.read(new File("res/image/frame1.png"));
+				frameimg=magnifySizeImage(frameimg,450,450);
+				PixelGrabber fpg = new PixelGrabber(frameimg,0,0,width,height,framepixel,0,width);
+				fpg.grabPixels();
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+			for(int i=0;i<width*height;i++){
+				if(r(framepixel[i])!=0){
+					pixel[i]=framepixel[i];
+				}
+			}
+			
+			
+			java.awt.Image alphaImage = Toolkit.getDefaultToolkit().createImage(new MemoryImageSource(width, height, pixel, 0, width));
+			return alphaImage;
+		}
 		
 		private static int[][] createXYpos(int key,BufferedImage compimg[],int num,int xmax,int ymax){
 		//配置コンポーネントがある程度重複しないような乱数生成メソッド
