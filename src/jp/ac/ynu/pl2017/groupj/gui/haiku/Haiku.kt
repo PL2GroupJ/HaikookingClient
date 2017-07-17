@@ -74,9 +74,15 @@ class Haiku : Initializable, TransitionPane, TransitionModalPane {
     }
 
     @FXML fun onKeyPressed(event: KeyEvent) {
-        if (event.code == KeyCode.ENTER) {
-            if (index.value < 2)
-                index.value += 1
+        when (event.code) {
+            KeyCode.ENTER -> {
+                if (index.value < 2)
+                    index.value += 1
+            }
+            KeyCode.BACK_SPACE -> {
+                if (input.text.isEmpty() && index.value > 0)
+                    index.value -= 1
+            }
         }
     }
 
