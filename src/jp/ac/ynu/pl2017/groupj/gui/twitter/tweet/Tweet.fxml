@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.image.ImageView?>
@@ -21,7 +22,12 @@
             <Button cancelButton="true" mnemonicParsing="false" onAction="#onClickCancel" text="キャンセル" BorderPane.alignment="CENTER" />
          </left>
          <right>
-            <Button alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#onClickTweet" text="投稿" BorderPane.alignment="CENTER" />
+            <HBox alignment="CENTER" spacing="5.0">
+               <children>
+                  <ProgressIndicator fx:id="indicator" maxHeight="20.0" maxWidth="20.0" visible="false" />
+                  <Button fx:id="tweetButton" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#onClickTweet" text="投稿" />
+               </children>
+            </HBox>
          </right>
          <center>
             <Label fx:id="userName" text="User名" BorderPane.alignment="CENTER">
