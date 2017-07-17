@@ -2,25 +2,26 @@ package jp.ac.ynu.pl2017.groupj.gui.haiku
 
 import javafx.beans.binding.Bindings
 import javafx.beans.property.SimpleIntegerProperty
+import javafx.concurrent.Task
 import javafx.fxml.FXML
 import javafx.fxml.Initializable
-import javafx.scene.control.Button
-import javafx.scene.control.Label
-import javafx.scene.control.TextField
+import javafx.scene.control.*
+import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyEvent
-import javafx.scene.layout.Pane
 import javafx.scene.layout.VBox
 import jp.ac.ynu.pl2017.groupj.gui.TransitionModalPane
 import jp.ac.ynu.pl2017.groupj.gui.TransitionPane
 import jp.ac.ynu.pl2017.groupj.gui.product.Product
 import jp.ac.ynu.pl2017.groupj.gui.setting.Setting
 import jp.ac.ynu.pl2017.groupj.gui.word.WordCloud
-import jp.ac.ynu.pl2017.groupj.util.Season
 import jp.ac.ynu.pl2017.groupj.util.getResourceAsImage
+import jp.ac.ynu.pl2017.groupj.util.showConnectionError
 import java.net.URL
 import java.util.*
+import java.util.concurrent.Executors
+import kotlin.test.fail
 
 /**
  * 俳句作成画面のコントローラー。
@@ -41,6 +42,7 @@ class Haiku : Initializable, TransitionPane, TransitionModalPane {
     @FXML lateinit var left: Button
     @FXML lateinit var right: Button
     @FXML lateinit var settingImage: ImageView
+    @FXML lateinit var progressBar: ProgressBar
     private val index = SimpleIntegerProperty(0)
     private val model = HaikuModel()
 
@@ -59,6 +61,7 @@ class Haiku : Initializable, TransitionPane, TransitionModalPane {
         left.setOnAction { index.value += 1 }
         right.setOnAction { index.value -= 1 }
         settingImage.image = "image/gear.png".getResourceAsImage()
+        progressBar.progressProperty().bind(model.progress)
         input.textProperty().bindBidirectional(output1.textProperty())
         index.addListener { _, oldValue, newValue ->
             input.textProperty().unbindBidirectional(outputs[oldValue.toInt()].textProperty())
@@ -82,11 +85,28 @@ class Haiku : Initializable, TransitionPane, TransitionModalPane {
     }
 
     @FXML fun onClickGenerate() {
-        // TODO: 進捗を表示できるようにする
-        model.analyze()
-        val (image, imageWithHaiku) = model.generateImage()
-        // とりあえず夏
-        setPane(Product(model.haiku.value, model.season, model.advice, image, imageWithHaiku))
+        progressBar.isVisible = true
+        // 画像生成処理を非同期で行う
+        val task = object : Task<Pair<Image, Image>>() {
+
+            override fun call(): Pair<Image, Image> {
+                if(!model.analyze()) fail()
+                return model.generateImage()
+            }
+
+            override fun failed() {
+                progressBar.isVisible = false
+                Alert(Alert.AlertType.INFORMATION).showConnectionError()
+            }
+
+            override fun succeeded() {
+                setPane(Product(model.haiku.value, model.season, model.advice, value.first, value.second))
+            }
+        }
+        Executors.newSingleThreadExecutor().run {
+            submit(task)
+            shutdown()
+        }
     }
 
     @FXML fun onClickWordCloud() {

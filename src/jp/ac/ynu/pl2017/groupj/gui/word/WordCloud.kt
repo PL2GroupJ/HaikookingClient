@@ -9,10 +9,10 @@ import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import jp.ac.ynu.pl2017.groupj.gui.HidePane
 import jp.ac.ynu.pl2017.groupj.net.HaikookingConnection
+import jp.ac.ynu.pl2017.groupj.util.showConnectionError
 import java.net.URL
 import java.util.*
 import java.util.concurrent.Executors
-import kotlin.concurrent.thread
 
 /**
  * WordCloudの表示画面のコントローラー。この画面はモーダルで表示する。
@@ -32,12 +32,7 @@ class WordCloud : Initializable, HidePane {
         val imageViews = arrayOf(total, week, month, spring, summer, autumn, winter, newYear)
         val con = HaikookingConnection()
         if (!con.openConnection()) {
-            Alert(Alert.AlertType.INFORMATION).apply {
-                title = "インターネット接続がありません"
-                headerText = null
-                contentText = "サーバーに接続できませんでした。${System.lineSeparator()}インターネット接続環境を確認後、もう一度お試しください。"
-                show()
-            }
+            Alert(Alert.AlertType.INFORMATION).showConnectionError()
             // hideが初期化されるのを待つために、スレッドで少し遅延させる。UIスレッドで動かす必要がある
             Platform.runLater {
                 Thread.sleep(100)

@@ -1,6 +1,7 @@
 package jp.ac.ynu.pl2017.groupj.util
 
 import javafx.embed.swing.SwingFXUtils
+import javafx.scene.control.Alert
 import javafx.scene.control.Tooltip
 import javafx.scene.image.Image
 import jp.ac.ynu.pl2017.groupj.gui.MainApp
@@ -97,3 +98,15 @@ fun String.getResourceAsImage(): Image = MainApp::class.java.classLoader.getReso
 var Tooltip.isVisible: Boolean
     get() = opacity == 1.0
     set(value) = if (value) opacity = 1.0 else opacity = 0.0
+
+/**
+ * 自サーバに接続できない時に表示するダイアログの初期設定をする。
+ */
+fun Alert.showConnectionError() {
+    this.apply {
+        title = "インターネット接続がありません"
+        headerText = null
+        contentText = "サーバーに接続できませんでした。${System.lineSeparator()}インターネット接続環境を確認後、もう一度お試しください。"
+        show()
+    }
+}
