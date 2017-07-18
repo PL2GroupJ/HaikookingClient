@@ -21,7 +21,6 @@ import jp.ac.ynu.pl2017.groupj.util.showConnectionError
 import java.net.URL
 import java.util.*
 import java.util.concurrent.Executors
-import kotlin.test.fail
 
 /**
  * 俳句作成画面のコントローラー。
@@ -92,7 +91,7 @@ class Haiku : Initializable, TransitionPane, TransitionModalPane {
         val task = object : Task<Pair<Image, Image>>() {
 
             override fun call(): Pair<Image, Image> {
-                if(!model.analyze()) fail()
+                if(!model.analyze()) failed()
                 return model.generateImage()
             }
 

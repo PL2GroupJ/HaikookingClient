@@ -15,7 +15,6 @@ import jp.ac.ynu.pl2017.groupj.util.getResourceAsImage
 import java.net.URL
 import java.util.*
 import java.util.concurrent.Executors
-import kotlin.test.fail
 
 /**
  * ツイート確認画面のコントローラー。ツイートの内容を編集できる。
@@ -60,7 +59,7 @@ class Tweet(val haiku: String, val season: Season, val image: Image) : Initializ
 
             override fun call(): Unit {
                 val tweeted = model.tweet(thumbnail.image)
-                if (!tweeted) fail()
+                if (!tweeted) failed()
             }
 
             override fun failed() {
