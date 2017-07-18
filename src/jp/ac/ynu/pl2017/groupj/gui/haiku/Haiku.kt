@@ -45,9 +45,9 @@ class Haiku : Initializable, TransitionPane, TransitionModalPane {
     @FXML lateinit var progressBar: ProgressBar
     private val index = SimpleIntegerProperty(0)
     private val model = HaikuModel()
+    private val outputs: Array<Label> by lazy { arrayOf(output1, output2, output3) }
 
     override fun initialize(location: URL?, resources: ResourceBundle?) {
-        val outputs = arrayOf(output1, output2, output3)
         val marks = arrayOf(mark1, mark2, mark3)
         val boxes = arrayOf(box1, box2, box3)
         val brush = "image/brush.png".getResourceAsImage()
@@ -63,11 +63,7 @@ class Haiku : Initializable, TransitionPane, TransitionModalPane {
         settingImage.image = "image/gear.png".getResourceAsImage()
         progressBar.progressProperty().bind(model.progress)
         input.textProperty().bindBidirectional(output1.textProperty())
-        index.addListener { _, oldValue, newValue ->
-            input.textProperty().unbindBidirectional(outputs[oldValue.toInt()].textProperty())
-            input.textProperty().bindBidirectional(outputs[newValue.toInt()].textProperty())
-            input.positionCaret(outputs[newValue.toInt()].text.length)
-        }
+        index.addListener { _, oldValue, newValue -> onIndexChanged(oldValue.toInt(), newValue.toInt()) }
         model.haiku.bind(Bindings.concat(output1.textProperty(), System.lineSeparator(),
                                          output2.textProperty(), System.lineSeparator(),
                                          output3.textProperty()))
@@ -117,5 +113,16 @@ class Haiku : Initializable, TransitionPane, TransitionModalPane {
 
     @FXML fun onClickWordCloud() {
         newPane(WordCloud())
+    }
+
+    private fun onIndexChanged(old: Int, new: Int) {
+        Executors.newSingleThreadExecutor().run {
+            execute {
+                input.textProperty().unbindBidirectional(outputs[old].textProperty())
+                input.textProperty().bindBidirectional(outputs[new].textProperty())
+                input.positionCaret(outputs[new].text.length)
+            }
+            shutdown()
+        }
     }
 }
