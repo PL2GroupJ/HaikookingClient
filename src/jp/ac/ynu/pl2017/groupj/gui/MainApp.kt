@@ -118,10 +118,11 @@ class MainApp : Application() {
     }
 
     private fun readProperties() {
-        if (!File(PROP).exists()) {
-            File(PROP).createNewFile()
+        if (!File(PROP_NAME).exists()) {
+            File(PROP_NAME).createNewFile()
+            Properties().write(PROP_NAME, IP_ADDRESS to "localhost")
         }
-        val propMap = Properties().read(PROP, TOKEN, TOKEN_SECRET, SEASON, ADVICE)
+        val propMap = Properties().read(PROP_NAME, TOKEN, TOKEN_SECRET, SEASON, ADVICE, IP_ADDRESS)
         if (!propMap[TOKEN].isNullOrEmpty() && !propMap[TOKEN_SECRET].isNullOrEmpty()) {
             val tokenPair = TokenPair(propMap[TOKEN]!!, propMap[TOKEN_SECRET]!!)
             User.twitter = TwitterAPI.loadUser(tokenPair)
@@ -132,16 +133,20 @@ class MainApp : Application() {
         if (!propMap[ADVICE].isNullOrEmpty()) {
             User.advice = propMap[ADVICE]!!.toBoolean()
         }
+        if (!propMap[IP_ADDRESS].isNullOrEmpty()) {
+            User.ipAddress = propMap[IP_ADDRESS]!!
+        }
     }
 
     companion object {
         val WIDTH = 450.0
         val HEIGHT = 600.0
-        val PROP = "haikooking.properties"
+        val PROP_NAME = "haikooking.properties"
         val TOKEN = "token"
         val TOKEN_SECRET = "tokenSecret"
         val SEASON = "season"
         val ADVICE = "advice"
+        val IP_ADDRESS = "ipAddress"
     }
 }
 

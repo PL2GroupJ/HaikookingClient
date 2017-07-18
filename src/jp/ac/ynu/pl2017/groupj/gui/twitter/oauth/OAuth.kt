@@ -28,7 +28,7 @@ class OAuth(val url: String) : Initializable, HidePane {
             // newValueがcallbackURLだった時にtokenPairが戻るので、処理を完了させる。
             if (tokenPair != null) {
                 User.twitter = TwitterAPI.loadUser(TwitterAPI.loadAccessToken(tokenPair))
-                Properties().write(MainApp.PROP,
+                Properties().write(MainApp.PROP_NAME,
                         MainApp.TOKEN to User.twitter!!.tokenPair.token,
                         MainApp.TOKEN_SECRET to User.twitter!!.tokenPair.tokenSecret)
                 finish.set(true)

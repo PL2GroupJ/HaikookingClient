@@ -32,7 +32,7 @@ class SettingModel {
         User.season = season
         User.advice = advice.value
 
-        Properties().write(MainApp.PROP,
+        Properties().write(MainApp.PROP_NAME,
                 MainApp.SEASON to season.name,
                 MainApp.ADVICE to advice.value.toString())
     }

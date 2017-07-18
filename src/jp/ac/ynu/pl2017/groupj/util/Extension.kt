@@ -31,7 +31,7 @@ fun Properties.read(propertyFile: String, vararg keys: String): Map<String, Stri
  * @param keyAndValues 書き込みたいプロパティの、キーと値のペアの可変長配列
  */
 fun Properties.write(propertyFile: String, vararg keyAndValues: Pair<String, String>) {
-    FileInputStream(MainApp.PROP).use {
+    FileInputStream(MainApp.PROP_NAME).use {
         load(it)
         keyAndValues.forEach { (key, value) -> setProperty(key, value) }
         FileOutputStream(propertyFile).use { store(it, "add or update:${keyAndValues.map { (key, _) -> key }.joinToString(separator = ", ")}") }
@@ -47,7 +47,7 @@ fun Properties.delete(propertyFile: String, vararg keys: String) {
     FileInputStream(propertyFile).use {
         load(it)
         keys.forEach { remove(it) }
-        FileOutputStream(MainApp.PROP).use { store(it, "delete:${keys.joinToString(separator = ", ")}") }
+        FileOutputStream(MainApp.PROP_NAME).use { store(it, "delete:${keys.joinToString(separator = ", ")}") }
     }
 }
 

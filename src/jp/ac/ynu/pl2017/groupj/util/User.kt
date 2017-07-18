@@ -7,4 +7,5 @@ object User {
     var twitter: TwitterUser? = null
     var season: Season = Season.DEFAULT
     var advice: Boolean = true
+    var ipAddress: String = "localhost"
 }

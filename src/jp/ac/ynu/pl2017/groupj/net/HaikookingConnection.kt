@@ -3,6 +3,7 @@ package jp.ac.ynu.pl2017.groupj.net
 import javafx.scene.image.Image
 import jp.ac.ynu.pl2017.groupj.util.ConnectionCommand
 import jp.ac.ynu.pl2017.groupj.util.Season
+import jp.ac.ynu.pl2017.groupj.util.User
 import jp.ac.ynu.pl2017.groupj.util.toImage
 import java.io.DataInputStream
 import java.io.DataOutputStream
@@ -13,7 +14,6 @@ import java.net.Socket
  * 自サーバとのやり取りをするクラス。
  */
 class HaikookingConnection {
-    private val ip = "localhost"
     private val port = 9999
     private var socket: Socket? = null
     private var input: DataInputStream? = null
@@ -76,7 +76,7 @@ class HaikookingConnection {
      * @return 接続の可否
      */
     fun openConnection(): Boolean {
-        try { socket = Socket(ip, port) }
+        try { socket = Socket(User.ipAddress, port) }
         catch (e: ConnectException) {
             // 接続が失敗した場合
             socket?.close()

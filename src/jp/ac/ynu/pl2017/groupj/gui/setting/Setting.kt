@@ -53,7 +53,7 @@ class Setting : Initializable, TransitionPane, TransitionModalPane {
             twitterButton.apply {
                 text = "ログアウト"
                 setOnAction {
-                    Properties().delete(MainApp.PROP, MainApp.TOKEN, MainApp.TOKEN_SECRET)
+                    Properties().delete(MainApp.PROP_NAME, MainApp.TOKEN, MainApp.TOKEN_SECRET)
                     User.twitter = null
                     setPane(Setting())
                 }
