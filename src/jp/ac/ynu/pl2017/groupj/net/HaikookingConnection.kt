@@ -5,6 +5,7 @@ import jp.ac.ynu.pl2017.groupj.util.ConnectionCommand
 import jp.ac.ynu.pl2017.groupj.util.Season
 import jp.ac.ynu.pl2017.groupj.util.User
 import jp.ac.ynu.pl2017.groupj.util.toImage
+import java.io.BufferedInputStream
 import java.io.DataInputStream
 import java.io.DataOutputStream
 import java.net.ConnectException
@@ -17,6 +18,7 @@ class HaikookingConnection {
     private val port = 9999
     private var socket: Socket? = null
     private var input: DataInputStream? = null
+    private var inputB: BufferedInputStream? = null
     private var output: DataOutputStream? = null
     private val separator = ":*:"
 
@@ -62,11 +64,10 @@ class HaikookingConnection {
      */
     fun readImages(): Array<Image> {
         sendCommand(ConnectionCommand.IMAGE)
-        val inputStream = socket!!.getInputStream()
         return (1..8).map {
             val size = input!!.readInt()
             val bytes = ByteArray(size)
-            inputStream.read(bytes)
+            inputB!!.read(bytes)
             bytes.toImage()
         }.toTypedArray()
     }
@@ -84,6 +85,7 @@ class HaikookingConnection {
             return false
         }
         input = DataInputStream(socket!!.getInputStream())
+        inputB = BufferedInputStream(socket!!.getInputStream())
         output = DataOutputStream(socket!!.getOutputStream())
         println("open connection : $socket")
         return true
@@ -95,6 +97,7 @@ class HaikookingConnection {
     fun closeConnection() {
         sendCommand(ConnectionCommand.DISCONNECT)
         input?.close()
+        inputB?.close()
         output?.close()
         socket?.close()
         println("close connection : $socket")

@@ -5,7 +5,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 
-<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="420.0" prefWidth="450.0" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="20.0" tabMaxWidth="40.0" tabMinHeight="20.0" tabMinWidth="40.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="470.0" prefWidth="450.0" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="20.0" tabMaxWidth="40.0" tabMinHeight="20.0" tabMinWidth="40.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
   <tabs>
      <Tab text="累計">
         <content>
