@@ -33,7 +33,7 @@
       <RowConstraints maxHeight="Infinity" minHeight="0.0" prefHeight="295.0" vgrow="SOMETIMES" />
    </rowConstraints>
    <children>
-      <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: linear-gradient(#FFFFF5 0%, #FFFFD0 100%);" GridPane.columnSpan="2" GridPane.rowSpan="6">
+      <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: linear-gradient(#FFFFF5 0%, #FFFFD0 100%); -fx-background-radius: 20;" GridPane.columnSpan="2" GridPane.rowSpan="6">
          <GridPane.margin>
             <Insets />
          </GridPane.margin>
@@ -113,10 +113,6 @@
             <Insets bottom="10.0" right="15.0" />
          </GridPane.margin>
       </Button>
-      <Separator prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="5">
-         <GridPane.margin>
-            <Insets left="5.0" right="5.0" />
-         </GridPane.margin></Separator>
    </children>
    <padding>
       <Insets left="5.0" right="5.0" top="5.0" />

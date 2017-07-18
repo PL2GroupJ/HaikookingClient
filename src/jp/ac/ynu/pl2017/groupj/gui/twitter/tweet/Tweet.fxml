@@ -45,7 +45,11 @@
                <children>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="150.0" spacing="10.0">
                      <children>
-                        <ImageView fx:id="thumbnail" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" />
+                        <Label style="-fx-border-width: 1; -fx-border-color: #888888;">
+                           <graphic>
+                              <ImageView fx:id="thumbnail" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" />
+                           </graphic>
+                        </Label>
                         <ToggleButton fx:id="attachButton" mnemonicParsing="false" selected="true" text="画像を添付" />
                      </children>
                   </VBox>
