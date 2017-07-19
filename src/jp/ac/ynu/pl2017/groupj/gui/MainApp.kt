@@ -51,7 +51,7 @@ class MainApp : Application() {
         val parent = loader.load<Parent>()
         val styleIndex = if (User.season == Season.DEFAULT) defaultIndex else User.season.ordinal
         stage.run {
-            title = className
+            title = APP_NAME
             scene = Scene(parent, WIDTH, HEIGHT).apply { stylesheets.add(styles[styleIndex]) }
         }
 
@@ -79,7 +79,7 @@ class MainApp : Application() {
         modalStage = Stage().apply {
             initModality(Modality.APPLICATION_MODAL)
             initOwner(stage)
-            title = className
+            title = APP_NAME
             scene = Scene(parent)
             show()
         }
@@ -141,6 +141,7 @@ class MainApp : Application() {
     companion object {
         val WIDTH = 450.0
         val HEIGHT = 600.0
+        val APP_NAME = "Haikooking"
         val PROP_NAME = "haikooking.properties"
         val TOKEN = "token"
         val TOKEN_SECRET = "tokenSecret"

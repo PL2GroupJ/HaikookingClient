@@ -52,7 +52,7 @@
             <RadioButton mnemonicParsing="false" text="夏" toggleGroup="$toggleGroup" />
             <RadioButton mnemonicParsing="false" text="秋" toggleGroup="$toggleGroup" />
             <RadioButton mnemonicParsing="false" text="冬" toggleGroup="$toggleGroup" />
-            <RadioButton mnemonicParsing="false" text="四季" toggleGroup="$toggleGroup">
+            <RadioButton mnemonicParsing="false" text="現在に同期" toggleGroup="$toggleGroup">
                <tooltip>
                   <Tooltip text="現在の季節に合わせて、テーマが切り替わります" />
                </tooltip></RadioButton>
