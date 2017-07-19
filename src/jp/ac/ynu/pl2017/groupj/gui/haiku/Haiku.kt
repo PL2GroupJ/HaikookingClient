@@ -62,6 +62,7 @@ class Haiku : Initializable, TransitionPane, TransitionModalPane {
         settingImage.image = "image/gear.png".getResourceAsImage()
         progressBar.progressProperty().bind(model.progress)
         input.textProperty().bindBidirectional(output1.textProperty())
+        input.requestFocus()
         index.addListener { _, oldValue, newValue -> onIndexChanged(oldValue.toInt(), newValue.toInt()) }
         model.haiku.bind(Bindings.concat(output1.textProperty(), System.lineSeparator(),
                                          output2.textProperty(), System.lineSeparator(),
