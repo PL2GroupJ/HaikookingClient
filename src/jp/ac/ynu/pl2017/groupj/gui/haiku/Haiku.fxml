@@ -7,6 +7,8 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.Bloom?>
 <?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.effect.InnerShadow?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -31,7 +33,14 @@
                   <Insets left="15.0" right="10.0" top="10.0" />
                </BorderPane.margin>
                <right>
-                  <ImageView fx:id="settingImage" fitHeight="35.0" fitWidth="35.0" onMouseClicked="#onClickSetting" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />
+                  <ImageView fx:id="settingImage" fitHeight="35.0" fitWidth="35.0" onMouseClicked="#onClickSetting" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+                     <effect>
+                        <Bloom threshold="1.0">
+                           <input>
+                              <InnerShadow choke="1.0" color="#4d4646" />
+                           </input>
+                        </Bloom>
+                     </effect></ImageView>
                </right>
             </BorderPane>
          </top>
