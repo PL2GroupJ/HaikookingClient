@@ -41,9 +41,9 @@
             <ImageView fx:id="haikuImage" fitHeight="434.0" fitWidth="434.0" pickOnBounds="true" preserveRatio="true" />
          </graphic>
          <tooltip>
-            <Tooltip fx:id="toolTip">
+            <Tooltip fx:id="toolTip" maxWidth="400.0" wrapText="true">
                <font>
-                  <Font size="16.0" />
+                  <Font size="14.0" />
                </font></Tooltip>
          </tooltip>
          <effect>
