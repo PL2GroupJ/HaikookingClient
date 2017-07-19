@@ -110,3 +110,19 @@ fun Alert.showConnectionError() {
         show()
     }
 }
+
+/**
+ * バイト列をバイト列のリストに分割するメソッド。
+ * @throws IllegalStateException 指定した分割のサイズの合計値と元のバイト列のサイズが一致しない場合
+ * @return 分割したバイト列のリスト
+ */
+fun ByteArray.split(sizeList: IntArray): List<ByteArray> {
+    if (this.size != sizeList.sum()) error("サイズの合計値が、分割元のサイズと一致しません")
+    val retList = sizeList.map { ByteArray(it) }
+    var pos = 0
+    sizeList.forEachIndexed { i, size ->
+        System.arraycopy(this, pos, retList[i], 0, size)
+        pos += size
+    }
+    return retList
+}

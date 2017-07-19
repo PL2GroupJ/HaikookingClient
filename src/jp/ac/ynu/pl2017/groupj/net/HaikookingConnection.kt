@@ -1,11 +1,7 @@
 package jp.ac.ynu.pl2017.groupj.net
 
 import javafx.scene.image.Image
-import jp.ac.ynu.pl2017.groupj.util.ConnectionCommand
-import jp.ac.ynu.pl2017.groupj.util.Season
-import jp.ac.ynu.pl2017.groupj.util.User
-import jp.ac.ynu.pl2017.groupj.util.toImage
-import java.io.BufferedInputStream
+import jp.ac.ynu.pl2017.groupj.util.*
 import java.io.DataInputStream
 import java.io.DataOutputStream
 import java.net.ConnectException
@@ -18,7 +14,6 @@ class HaikookingConnection {
     private val port = 9999
     private var socket: Socket? = null
     private var input: DataInputStream? = null
-    private var inputB: BufferedInputStream? = null
     private var output: DataOutputStream? = null
     private val separator = ":*:"
 
@@ -62,14 +57,19 @@ class HaikookingConnection {
      * 画像を受信する。WordCloudの画像受信に利用。
      * @return 画像の配列
      */
-    fun readImages(): Array<Image> {
+    fun readImages(): List<Image> {
         sendCommand(ConnectionCommand.IMAGE)
-        return (1..8).map {
-            val size = input!!.readInt()
-            val bytes = ByteArray(size)
-            inputB!!.read(bytes)
-            bytes.toImage()
-        }.toTypedArray()
+        val sizeList = (1..8).map { input!!.readInt() }
+        val totalSize = sizeList.sum()
+        val bytes = ByteArray(totalSize)    // ここにデータを受信する
+        var loadSize = 0
+
+        // BufferedInputStreamを使うと、指定したバイト数をピッタリと受信してくれなくなる
+        // そのためread()メソッドを用いて、全てのバイト列を読み出すまでオフセットを変えながらループ
+        while (loadSize != totalSize)
+            loadSize += input!!.read(bytes, loadSize, totalSize - loadSize)
+
+        return bytes.split(sizeList.toIntArray()).map { it.toImage() }
     }
 
     /**
@@ -85,7 +85,6 @@ class HaikookingConnection {
             return false
         }
         input = DataInputStream(socket!!.getInputStream())
-        inputB = BufferedInputStream(socket!!.getInputStream())
         output = DataOutputStream(socket!!.getOutputStream())
         println("open connection : $socket")
         return true
@@ -97,7 +96,6 @@ class HaikookingConnection {
     fun closeConnection() {
         sendCommand(ConnectionCommand.DISCONNECT)
         input?.close()
-        inputB?.close()
         output?.close()
         socket?.close()
         println("close connection : $socket")

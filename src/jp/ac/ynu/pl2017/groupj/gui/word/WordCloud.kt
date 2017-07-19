@@ -41,13 +41,14 @@ class WordCloud : Initializable, HidePane {
             return
         }
 
-        val task = object : Task<Array<Image>>() {
-            override fun call(): Array<Image> = con.readImages()
-
-            override fun succeeded() {
-                value.forEachIndexed { i, image -> imageViews[i].image = image }
+        val task = object : Task<List<Image>>() {
+            override fun call(): List<Image> {
+                val images = con.readImages()
                 con.closeConnection()
+                return images
             }
+
+            override fun succeeded() = value.forEachIndexed { i, image -> imageViews[i].image = image }
         }
         Executors.newSingleThreadExecutor().run {
             submit(task)
