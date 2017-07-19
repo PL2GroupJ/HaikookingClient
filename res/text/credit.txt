@@ -1,0 +1,14 @@
+参考書籍
+(季語DB)　今はじめる人のための俳句歳時記　新版　角川学芸出版編　新版15版
+
+参考URL
+(MeCab)MeCab: Yet Another Part-of-Speech and Morphological Analyzer
+	http://taku910.github.io/mecab/
+(WordCloud)amueller/word_cloud:A little word cloud generator in Python
+	https://github.com/amueller/word_cloud
+(体言止め)nanapi -趣味・娯楽- 俳句の技法「体言止め」の意味と使い方
+	https://nanapi.com/ja/112697
+(字余り・字足らず)nanapi -趣味・娯楽- 初心者には難しい俳句の「字余り・字足らず」の意味と使い方
+	https://nanapi.com/ja/101116
+(切れ字)日本俳句研究会　俳句の作り方　-「切れ」「切れ字」とは？-
+	https://jphaiku.jp/how/kire.html

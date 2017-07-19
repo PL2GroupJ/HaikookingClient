@@ -11,6 +11,7 @@ import javafx.scene.image.ImageView
 import jp.ac.ynu.pl2017.groupj.gui.MainApp
 import jp.ac.ynu.pl2017.groupj.gui.TransitionModalPane
 import jp.ac.ynu.pl2017.groupj.gui.TransitionPane
+import jp.ac.ynu.pl2017.groupj.gui.credit.Credit
 import jp.ac.ynu.pl2017.groupj.gui.haiku.Haiku
 import jp.ac.ynu.pl2017.groupj.gui.twitter.oauth.OAuth
 import jp.ac.ynu.pl2017.groupj.net.TwitterAPI
@@ -82,5 +83,9 @@ class Setting : Initializable, TransitionPane, TransitionModalPane {
     @FXML fun onClickSave() {
         model.save()
         setPane(Haiku())
+    }
+
+    @FXML fun onClickCredit() {
+        newPane(Credit())
     }
 }
