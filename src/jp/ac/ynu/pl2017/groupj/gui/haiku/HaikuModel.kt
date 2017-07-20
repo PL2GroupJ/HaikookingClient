@@ -62,7 +62,7 @@ class HaikuModel {
             progress.value += 0.3
             it.getResourceAsImage()
         }
-        ImageUtil.createHaikuImage(200, backImage, images.toTypedArray(), haiku.value.split(System.lineSeparator()).toTypedArray())
+        ImageUtil.createHaikuImage(backImage, images.toTypedArray(), haiku.value.split(System.lineSeparator()).toTypedArray(), season)
         progress.value = 1.0
         return ImageUtil.getHaikuimg() to ImageUtil.gethaikuimgWithstr()
     }

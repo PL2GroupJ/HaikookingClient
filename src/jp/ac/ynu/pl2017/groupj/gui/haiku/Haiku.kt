@@ -79,6 +79,7 @@ class Haiku : Initializable, TransitionPane, TransitionModalPane {
                 if (input.text.isEmpty() && index.value > 0)
                     index.value -= 1
             }
+            else -> {}
         }
     }
 
