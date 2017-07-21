@@ -60,7 +60,7 @@ public class ImageUtil {
 		Image[] fximg = { SwingFXUtils.toFXImage(compimage, null), SwingFXUtils.toFXImage(compimage2, null),
 				SwingFXUtils.toFXImage(compimage3, null), SwingFXUtils.toFXImage(compimage4, null) };
 		Image backimagefx = SwingFXUtils.toFXImage(backimage, null);
-		String[] Haiku = { "古池や", "蛙飛び込む", "水の音" };
+		String[] Haiku = { "あ", "あ", "あ" };
 		Season season = Season.WINTER;
 		createHaikuImage(backimagefx, fximg, Haiku, season);
 		synimg = SwingFXUtils.fromFXImage(gethaikuimgWithstr(), null);// 俳句付き画像
@@ -230,19 +230,24 @@ public class ImageUtil {
 			return null;
 		BufferedImage newimage = img;
 		Graphics graphics = newimage.createGraphics();
+		int defaultsize=120;
 
 		int Maxlen = 0;
 		for (int i = 0; i < str.length - 1; i++) {
 			Maxlen = Math.max(str[i].length(), str[i + 1].length());
 		}
 		int fontsize = 450 / Maxlen - 10;
+		if(fontsize>130){
+			fontsize=120;
+		}
+		
 		// 文字合成
 		graphics.setColor(Color.BLACK);
 		Font font = new Font("ＭＳ 明朝", Font.BOLD, fontsize);
 		for (int len = 0; len < str.length; len++) {
 			for (int i = 0; i < str[len].length(); i++) {
 				graphics.setFont(font);
-				graphics.drawString(String.valueOf(str[len].charAt(i)), 300 + len * (-110), 100 + fontsize * i);
+				graphics.drawString(String.valueOf(str[len].charAt(i)),300 +len*(-130), 100 + fontsize * i);
 			}
 		}
 		return newimage;
