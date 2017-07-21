@@ -11,14 +11,10 @@ import java.awt.image.BufferedImageOp;
 import java.awt.image.ColorConvertOp;
 import java.awt.image.MemoryImageSource;
 import java.awt.image.PixelGrabber;
-import java.io.File;
 import java.io.InputStream;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
@@ -29,7 +25,7 @@ public class ImageUtil {
 	private static Image haikuimageWithStr = null;
 	private static int eachshapenum = 2;
 	private static int compsize = 150;
-
+/*
 	public static void main(String[] args) {
 		// TODO 自動生成されたメソッド・スタブ
 		BufferedImage backimage = null;
@@ -58,11 +54,12 @@ public class ImageUtil {
 		JFrame frame = new JFrame();
 		BufferedImage synimg;
 		Image[] fximg = { SwingFXUtils.toFXImage(compimage, null), SwingFXUtils.toFXImage(compimage2, null),
-				SwingFXUtils.toFXImage(compimage3, null), SwingFXUtils.toFXImage(compimage4, null) };
+				SwingFXUtils.toFXImage(compimage3, null), SwingFXUtils.toFXImage(compimage4, null)};
+				
 		Image backimagefx = SwingFXUtils.toFXImage(backimage, null);
-		String[] Haiku = { "あ", "あ", "あ" };
-		Season season = Season.WINTER;
-		createHaikuImage(backimagefx, fximg, Haiku, season);
+		String[] Haiku = { "古池や","蛙飛び込む","水の音"};
+		Season season = Season.SUMMER;
+		createHaikuImage(backimagefx,fximg, Haiku,season);
 		synimg = SwingFXUtils.fromFXImage(gethaikuimgWithstr(), null);// 俳句付き画像
 		// synimg=SwingFXUtils.fromFXImage(getHaikuimg(), null); //俳句なし画像表示テスト用
 
@@ -226,11 +223,9 @@ public class ImageUtil {
 	}
 
 	private static BufferedImage DrawString(BufferedImage img, String[] str) {
-		if (img == null || str.length != 3)
-			return null;
+		if (img == null)return null;
 		BufferedImage newimage = img;
 		Graphics graphics = newimage.createGraphics();
-		int defaultsize=120;
 
 		int Maxlen = 0;
 		for (int i = 0; i < str.length - 1; i++) {
@@ -243,7 +238,7 @@ public class ImageUtil {
 		
 		// 文字合成
 		graphics.setColor(Color.BLACK);
-		Font font = new Font("ＭＳ 明朝", Font.BOLD, fontsize);
+		Font font = new Font("魚石行書", Font.BOLD, fontsize);
 		for (int len = 0; len < str.length; len++) {
 			for (int i = 0; i < str[len].length(); i++) {
 				graphics.setFont(font);
@@ -276,10 +271,9 @@ public class ImageUtil {
 
 	public static void createHaikuImage(Image backimage, Image[] img, String[] str) {
 		// 2種の俳句画像を生成、compsizeは合成素材正方画像サイズ,backimageは背景画像,strは俳句をいれる
-		if (backimage == null || img.length == 0 || str.length != 3)
-			return;
 		BufferedImage newbackimage = null;
 		resetHaikuImage();
+		Color framecolor=Color.white;
 
 		newbackimage = SwingFXUtils.fromFXImage(backimage, null);
 		newbackimage = magnifySizeImage(newbackimage, 450, 450);// 背景画像加工
@@ -297,7 +291,7 @@ public class ImageUtil {
 		synimg = createBufferedImage(removeblack(synimg));
 		haikuimage = SwingFXUtils.toFXImage(synimg, null);
 		synimg = DrawString(synimg, str);
-		synimg = createBufferedImage(FontFramed((java.awt.Image) synimg));
+		synimg = createBufferedImage(FontFramed((java.awt.Image) synimg,framecolor));
 		haikuimageWithStr = SwingFXUtils.toFXImage(synimg, null);
 		// return Haikuimg;
 
@@ -305,27 +299,34 @@ public class ImageUtil {
 
 	public static void createHaikuImage(Image backimage, Image[] img, String[] str, Season season) {
 		// 2種の俳句画像を生成、compsizeは合成素材正方画像サイズ,backimageは背景画像,strは俳句をいれる
-		if (backimage == null || img.length == 0 || str.length != 3)
+		if(!cheakobjnull(img)||!cheakobjnull(str)||season==null||backimage==null){
+			setdefaultHaikuImage(str);
 			return;
+		}
+		
 		BufferedImage newbackimage = null;
 		resetHaikuImage();
 
 		newbackimage = SwingFXUtils.fromFXImage(backimage, null);
 		newbackimage = magnifySizeImage(newbackimage, 450, 450);// 背景画像加工
-																// //450*450
+		// //450*450
 		BufferedImage synimg = newbackimage;
 		Random rnd = new Random(getHaikukey(str));
 		boolean seasonflg = true;
 		InputStream[] is = new InputStream[eachshapenum];
 		BufferedImage[] shapeimage = new BufferedImage[eachshapenum];
+		Color framecolor=Color.white;
 		
 		switch (season) {
 		case SPRING:{
-			is[0] = ImageUtil.class.getClassLoader().getResourceAsStream("image\\shapedimage\\spring1.png");
-			is[1] = ImageUtil.class.getClassLoader().getResourceAsStream("image\\shapedimage\\spring2.jpg");
+			framecolor=Color.pink;
+			is[0] = ImageUtil.class.getClassLoader().getResourceAsStream("image/shapedimage/spring1.png");
+			is[1] = ImageUtil.class.getClassLoader().getResourceAsStream("image/shapedimage/spring2.png");
 			try {
 				shapeimage[0] = ImageIO.read(is[0]);
 				shapeimage[1] = ImageIO.read(is[1]);
+				is[0].close();
+				is[1].close();
 
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -334,8 +335,9 @@ public class ImageUtil {
 			break;
 		}
 		case SUMMER:{
-			is[0] = ImageUtil.class.getClassLoader().getResourceAsStream("image\\shapedimage\\summer1.png");
-			is[1] = ImageUtil.class.getClassLoader().getResourceAsStream("image\\shapedimage\\summer2.png");
+			framecolor=Color.yellow;
+			is[0] = ImageUtil.class.getClassLoader().getResourceAsStream("image/shapedimage/summer1.png");
+			is[1] = ImageUtil.class.getClassLoader().getResourceAsStream("image/shapedimage/summer2.png");
 			try {
 				shapeimage[0] = ImageIO.read(is[0]);
 				shapeimage[1] = ImageIO.read(is[1]);
@@ -349,8 +351,9 @@ public class ImageUtil {
 			break;
 		}
 		case AUTUMN:{
-			is[0] = ImageUtil.class.getClassLoader().getResourceAsStream("image\\shapedimage\\autumn1.gif");
-			is[1] = ImageUtil.class.getClassLoader().getResourceAsStream("image\\shapedimage\\autumn2.jpg");
+			framecolor=Color.orange;
+			is[0] = ImageUtil.class.getClassLoader().getResourceAsStream("image/shapedimage/autumn1.png");
+			is[1] = ImageUtil.class.getClassLoader().getResourceAsStream("image/shapedimage/autumn2.png");
 			try {
 				shapeimage[0] = ImageIO.read(is[0]);
 				shapeimage[1] = ImageIO.read(is[1]);
@@ -364,8 +367,9 @@ public class ImageUtil {
 		}
 		
 		case WINTER:{
-			is[0] = ImageUtil.class.getClassLoader().getResourceAsStream("image\\shapedimage\\winter1.png");
-			is[1] = ImageUtil.class.getClassLoader().getResourceAsStream("image\\shapedimage\\winter2.jpg");
+			framecolor=Color.CYAN;
+			is[0] = ImageUtil.class.getClassLoader().getResourceAsStream("image/shapedimage/winter1.png");
+			is[1] = ImageUtil.class.getClassLoader().getResourceAsStream("image/shapedimage/winter2.png");
 			try {
 				shapeimage[0] = ImageIO.read(is[0]);
 				shapeimage[1] = ImageIO.read(is[1]);
@@ -405,8 +409,8 @@ public class ImageUtil {
 			synimg = createBufferedImage(removeblack(synimg));
 			haikuimage = SwingFXUtils.toFXImage(synimg, null);
 			synimg = DrawString(synimg, str);
-			synimg = createBufferedImage(FontFramed((java.awt.Image) synimg));
-			haikuimageWithStr = SwingFXUtils.toFXImage(synimg, null);
+			synimg = createBufferedImage(FontFramed((java.awt.Image) synimg,framecolor));
+			haikuimageWithStr =SwingFXUtils.toFXImage(synimg, null);
 		} else {
 			createHaikuImage(backimage, img, str);
 		}
@@ -480,7 +484,7 @@ public class ImageUtil {
 	}
 
 
-	private static java.awt.Image FontFramed(java.awt.Image img) {
+	private static java.awt.Image FontFramed(java.awt.Image img,Color c) {
 		int width = img.getWidth(null);
 		int height = img.getHeight(null);
 		int[] pixel = new int[width * height];
@@ -492,35 +496,35 @@ public class ImageUtil {
 		}
 
 		int blackRGB = Color.BLACK.getRGB();
-		int whiteRGB = Color.WHITE.getRGB();
+		int cRGB = c.getRGB();
 
-		for (int i = 0; i < width * height; i++) {// 白透過
+		for (int i = 0; i < width * height; i++) {
 			if (pixel[i] == blackRGB) {
 				if (i + height * 3 < height * width) {
 					if (i + height < width * height)
 						if (pixel[i + height] != blackRGB)
-							pixel[i + height] = whiteRGB;
+							pixel[i + height] = cRGB;
 					if (i - height >= 0)
 						if (pixel[i - height] != blackRGB)
-							pixel[i - height] = whiteRGB;
+							pixel[i - height] = cRGB;
 					if (i != 0)
 						if (pixel[i - 1] != blackRGB)
-							pixel[i - 1] = whiteRGB;
-					if (i + 1 < width * height)
+							pixel[i - 1] = cRGB;
+					if (i + 1< width * height)
 						if (pixel[i + 1] != blackRGB)
-							pixel[i + 1] = whiteRGB;
+							pixel[i + 1] = cRGB;
 					if (i + height + 1 < width * height)
 						if (pixel[i + height + 1] != blackRGB)
-							pixel[i + height + 1] = whiteRGB;
+							pixel[i + height + 1] = cRGB;
 					if (i + height - 1 < width * height)
 						if (pixel[i + height - 1] != blackRGB)
-							pixel[i + height - 1] = whiteRGB;
+							pixel[i + height - 1] = cRGB;
 					if (i - height + 1 >= 0)
 						if (pixel[i - height + 1] != blackRGB)
-							pixel[i - height + 1] = whiteRGB;
+							pixel[i - height + 1] = cRGB;
 					if (i - height - 1 >= 0)
 						if (pixel[i - height - 1] != blackRGB)
-							pixel[i - height - 1] = whiteRGB;
+							pixel[i - height - 1] = cRGB;
 				}
 			}
 		}
@@ -602,6 +606,40 @@ public class ImageUtil {
 			}
 		}
 		return xypos;
+	}
+	
+	private static void setdefaultHaikuImage(String str[]){
+		InputStream isd;
+		BufferedImage defaultimage = null;
+		isd = ImageUtil.class.getClassLoader().getResourceAsStream("image/defaultHaiku.png");
+		System.out.println("失敗");
+		try {
+			defaultimage = ImageIO.read(isd);
+			isd.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		BufferedImage bimg=createBufferedImage((removeblack(magnifySizeImage(defaultimage, 450, 450))));
+		haikuimage = SwingFXUtils.toFXImage(bimg,null);
+		if(cheakobjnull(str)){
+			bimg = DrawString(bimg, str);
+			bimg = createBufferedImage(FontFramed((java.awt.Image) bimg,Color.white));
+			haikuimageWithStr =SwingFXUtils.toFXImage(bimg, null);
+		}else{
+			haikuimageWithStr=haikuimage;
+		}
+	
+		}
+	
+	private static boolean cheakobjnull(Object obj[]){
+		if(obj==null||obj.length==0){
+			return false;
+		}else{
+			for(int i=0;i<obj.length;i++){
+				if(obj[i]==null) return false;
+			}
+		}
+		return true;
 	}
 
 	// 以下は引数からアルファ値及びRGBのそれぞれの値を抽出するメソッド
