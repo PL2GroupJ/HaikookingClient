@@ -30,6 +30,7 @@ class MainApp : Application() {
     private val defaultIndex = Calendar.getInstance().getSeason().ordinal
 
     override fun start(primaryStage: Stage) {
+        System.setProperty("file.encoding", "UTF-8")    // エンコーディングをここで指定しないと文字化けする
         readProperties()
         stage = primaryStage
         setPane(Title())
