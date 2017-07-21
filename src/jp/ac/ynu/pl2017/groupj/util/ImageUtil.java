@@ -321,8 +321,8 @@ public class ImageUtil {
 		
 		switch (season) {
 		case SPRING:{
-			is[0] = ImageUtil.class.getClassLoader().getResourceAsStream("image\\shapedimage\\spring1.png");
-			is[1] = ImageUtil.class.getClassLoader().getResourceAsStream("image\\shapedimage\\spring2.jpg");
+			is[0] = ImageUtil.class.getClassLoader().getResourceAsStream("image/shapedimage/spring1.png");
+			is[1] = ImageUtil.class.getClassLoader().getResourceAsStream("image/shapedimage/spring2.jpg");
 			try {
 				shapeimage[0] = ImageIO.read(is[0]);
 				shapeimage[1] = ImageIO.read(is[1]);
@@ -334,8 +334,8 @@ public class ImageUtil {
 			break;
 		}
 		case SUMMER:{
-			is[0] = ImageUtil.class.getClassLoader().getResourceAsStream("image\\shapedimage\\summer1.png");
-			is[1] = ImageUtil.class.getClassLoader().getResourceAsStream("image\\shapedimage\\summer2.png");
+			is[0] = ImageUtil.class.getClassLoader().getResourceAsStream("image/shapedimage/summer1.png");
+			is[1] = ImageUtil.class.getClassLoader().getResourceAsStream("image/shapedimage/summer2.png");
 			try {
 				shapeimage[0] = ImageIO.read(is[0]);
 				shapeimage[1] = ImageIO.read(is[1]);
@@ -349,8 +349,8 @@ public class ImageUtil {
 			break;
 		}
 		case AUTUMN:{
-			is[0] = ImageUtil.class.getClassLoader().getResourceAsStream("image\\shapedimage\\autumn1.gif");
-			is[1] = ImageUtil.class.getClassLoader().getResourceAsStream("image\\shapedimage\\autumn2.jpg");
+			is[0] = ImageUtil.class.getClassLoader().getResourceAsStream("image/shapedimage/autumn1.gif");
+			is[1] = ImageUtil.class.getClassLoader().getResourceAsStream("image/shapedimage/autumn2.jpg");
 			try {
 				shapeimage[0] = ImageIO.read(is[0]);
 				shapeimage[1] = ImageIO.read(is[1]);
@@ -364,8 +364,8 @@ public class ImageUtil {
 		}
 		
 		case WINTER:{
-			is[0] = ImageUtil.class.getClassLoader().getResourceAsStream("image\\shapedimage\\winter1.png");
-			is[1] = ImageUtil.class.getClassLoader().getResourceAsStream("image\\shapedimage\\winter2.jpg");
+			is[0] = ImageUtil.class.getClassLoader().getResourceAsStream("image/shapedimage/winter1.png");
+			is[1] = ImageUtil.class.getClassLoader().getResourceAsStream("image/shapedimage/winter2.jpg");
 			try {
 				shapeimage[0] = ImageIO.read(is[0]);
 				shapeimage[1] = ImageIO.read(is[1]);
