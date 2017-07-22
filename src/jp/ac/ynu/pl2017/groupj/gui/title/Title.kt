@@ -17,17 +17,18 @@ class Title : Initializable, TransitionPane {
     override lateinit var setPane: (Any) -> Unit
     @FXML lateinit var titleImage: ImageView
     @FXML lateinit var canvas: Canvas
-    private val model: TitleModel by lazy { TitleModel(canvas.graphicsContext2D) }
+    private val model = TitleModel()
 
     override fun initialize(location: URL?, resources: ResourceBundle?) {
         titleImage.image = "image/title.png".getResourceAsImage()
-        model.draw()
+        model.startAnimation(canvas.graphicsContext2D)
     }
 
     /**
      * 俳句作成画面に遷移する
      */
     @FXML fun onClickStart() {
+        model.stopAnimation()
         setPane(Haiku())
     }
 }

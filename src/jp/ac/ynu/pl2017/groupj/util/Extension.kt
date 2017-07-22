@@ -126,3 +126,11 @@ fun ByteArray.split(sizeList: IntArray): List<ByteArray> {
     }
     return retList
 }
+
+/**
+ * ペア同士の要素を足し合わせる。座標などの加算に利用。
+ * @return 加算後のペア
+ */
+operator fun Pair<Double, Double>.plus(p: Pair<Double, Double>): Pair<Double, Double> {
+    return this.copy(first + p.first, second + p.second)
+}
