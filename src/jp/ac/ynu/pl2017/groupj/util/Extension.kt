@@ -1,6 +1,7 @@
 package jp.ac.ynu.pl2017.groupj.util
 
 import javafx.embed.swing.SwingFXUtils
+import javafx.scene.canvas.GraphicsContext
 import javafx.scene.control.Alert
 import javafx.scene.control.Tooltip
 import javafx.scene.image.Image
@@ -133,4 +134,13 @@ fun ByteArray.split(sizeList: IntArray): List<ByteArray> {
  */
 operator fun Pair<Double, Double>.plus(p: Pair<Double, Double>): Pair<Double, Double> {
     return this.copy(first + p.first, second + p.second)
+}
+
+/**
+ * [GraphicsContext]のsave()とrestore()を最初と最後に呼ぶ。その間に渡された関数を実行する。
+ */
+fun GraphicsContext.pushPop(block: GraphicsContext.() -> Unit) {
+    save()
+    block()
+    restore()
 }
