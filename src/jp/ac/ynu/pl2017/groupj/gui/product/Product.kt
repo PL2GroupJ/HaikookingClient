@@ -37,6 +37,7 @@ class Product(val haiku: String, val season: Season, val advice: String, val ima
 
     override fun initialize(location: URL?, resources: ResourceBundle?) {
         haikuImage.imageProperty().bind(Bindings.`when`(textOn.selectedProperty()).then(image).otherwise(imageWithHaiku))
+        textOn.textProperty().bind(Bindings.`when`(textOn.selectedProperty()).then("俳句を表示する").otherwise("俳句を表示しない"))
         toolTip.run {
             text = advice
             isVisible = User.advice

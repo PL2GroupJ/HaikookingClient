@@ -19,7 +19,7 @@
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="70.0" BorderPane.alignment="CENTER">
          <children>
             <Button mnemonicParsing="false" onAction="#onClickTweet" text="ツイートする" />
-            <ToggleButton fx:id="textOn" mnemonicParsing="false" text="俳句を非表示にする" />
+            <ToggleButton fx:id="textOn" mnemonicParsing="false" text="俳句ON/OFF" />
             <Button mnemonicParsing="false" onAction="#onClickReturn" text="もう一句" />
          </children>
       </HBox>

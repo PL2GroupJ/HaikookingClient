@@ -52,7 +52,7 @@ class Setting : Initializable, TransitionPane, TransitionModalPane {
             screenNameLabel.text = User.twitter?.screenName
             icon.image = User.twitter?.profileImage
             twitterButton.apply {
-                text = "ログアウト"
+                text = "連携解除"
                 setOnAction {
                     Properties().delete(MainApp.PROP_NAME, MainApp.TOKEN, MainApp.TOKEN_SECRET)
                     User.twitter = null
@@ -62,7 +62,7 @@ class Setting : Initializable, TransitionPane, TransitionModalPane {
         }
         else {
             twitterButton.run {
-                text = "ログイン"
+                text = "連携"
                 setOnAction {
                     val oauth = OAuth(TwitterAPI.loadAuthorizeUrl())
                     login.bind(oauth.finish)
