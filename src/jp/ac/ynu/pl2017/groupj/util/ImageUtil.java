@@ -11,10 +11,14 @@ import java.awt.image.BufferedImageOp;
 import java.awt.image.ColorConvertOp;
 import java.awt.image.MemoryImageSource;
 import java.awt.image.PixelGrabber;
+//import java.io.File;
 import java.io.InputStream;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
+//import javax.swing.ImageIcon;
+//import javax.swing.JFrame;
+//import javax.swing.JLabel;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
@@ -25,7 +29,8 @@ public class ImageUtil {
 	private static Image haikuimageWithStr = null;
 	private static int eachshapenum = 2;
 	private static int compsize = 150;
-/*
+
+	/*
 	public static void main(String[] args) {
 		// TODO 自動生成されたメソッド・スタブ
 		BufferedImage backimage = null;
@@ -55,9 +60,9 @@ public class ImageUtil {
 		BufferedImage synimg;
 		Image[] fximg = { SwingFXUtils.toFXImage(compimage, null), SwingFXUtils.toFXImage(compimage2, null),
 				SwingFXUtils.toFXImage(compimage3, null), SwingFXUtils.toFXImage(compimage4, null)};
-				
+
 		Image backimagefx = SwingFXUtils.toFXImage(backimage, null);
-		String[] Haiku = { "古池や","蛙飛び込む","水の音"};
+		String[] Haiku = { "","",""};
 		Season season = Season.SUMMER;
 		createHaikuImage(backimagefx,fximg, Haiku,season);
 		synimg = SwingFXUtils.fromFXImage(gethaikuimgWithstr(), null);// 俳句付き画像
@@ -75,7 +80,7 @@ public class ImageUtil {
 		icon2.setBounds(20 + synimg.getHeight(null), 20, synimg.getWidth(null), synimg.getHeight(null));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
-	// */
+	*/
 
 	private static BufferedImage getBWImage(BufferedImage img) { // 完全に白黒化
 		if (img == null)
@@ -235,7 +240,7 @@ public class ImageUtil {
 		if(fontsize>130){
 			fontsize=120;
 		}
-		
+
 		// 文字合成
 		graphics.setColor(Color.BLACK);
 		Font font = new Font("魚石行書", Font.BOLD, fontsize);
@@ -303,7 +308,7 @@ public class ImageUtil {
 			setdefaultHaikuImage(str);
 			return;
 		}
-		
+
 		BufferedImage newbackimage = null;
 		resetHaikuImage();
 
@@ -316,7 +321,7 @@ public class ImageUtil {
 		InputStream[] is = new InputStream[eachshapenum];
 		BufferedImage[] shapeimage = new BufferedImage[eachshapenum];
 		Color framecolor=Color.white;
-		
+
 		switch (season) {
 		case SPRING:{
 			framecolor=Color.pink;
@@ -365,7 +370,7 @@ public class ImageUtil {
 			}
 			break;
 		}
-		
+
 		case WINTER:{
 			framecolor=Color.CYAN;
 			is[0] = ImageUtil.class.getClassLoader().getResourceAsStream("image/shapedimage/winter1.png");
@@ -380,7 +385,7 @@ public class ImageUtil {
 				e.printStackTrace();
 			}
 			break;
-		}		
+		}
 		default:
 			seasonflg = false;
 			break;
@@ -607,12 +612,11 @@ public class ImageUtil {
 		}
 		return xypos;
 	}
-	
+
 	private static void setdefaultHaikuImage(String str[]){
 		InputStream isd;
 		BufferedImage defaultimage = null;
 		isd = ImageUtil.class.getClassLoader().getResourceAsStream("image/defaultHaiku.png");
-		System.out.println("失敗");
 		try {
 			defaultimage = ImageIO.read(isd);
 			isd.close();
@@ -628,17 +632,20 @@ public class ImageUtil {
 		}else{
 			haikuimageWithStr=haikuimage;
 		}
-	
+
 		}
-	
+
 	private static boolean cheakobjnull(Object obj[]){
+		int strcount=0;
 		if(obj==null||obj.length==0){
 			return false;
 		}else{
 			for(int i=0;i<obj.length;i++){
 				if(obj[i]==null) return false;
+				if(obj[i].toString().equals(""))  strcount++;
 			}
 		}
+		if(strcount==obj.length) return false;
 		return true;
 	}
 
