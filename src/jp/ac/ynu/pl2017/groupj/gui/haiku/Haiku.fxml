@@ -8,7 +8,6 @@
 <?import javafx.scene.effect.Bloom?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.effect.InnerShadow?>
-<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -62,7 +61,7 @@
                      <children>
                         <VBox fx:id="box3" alignment="TOP_CENTER">
                            <children>
-                              <Label fx:id="output3" maxWidth="10.0" text="水の音" textAlignment="CENTER" wrapText="true">
+                              <Label fx:id="output3" maxWidth="10.0" textAlignment="CENTER" wrapText="true">
                                  <font>
                                     <Font size="36.0" />
                                  </font>
@@ -81,7 +80,7 @@
                               <Insets />
                            </HBox.margin>
                            <children>
-                              <Label fx:id="output2" maxWidth="10.0" text="蛙飛び込む" textAlignment="CENTER" wrapText="true">
+                              <Label fx:id="output2" maxWidth="10.0" textAlignment="CENTER" wrapText="true">
                                  <font>
                                     <Font size="36.0" />
                                  </font>
@@ -94,7 +93,7 @@
                         </VBox>
                         <VBox fx:id="box1" alignment="TOP_CENTER">
                            <children>
-                              <Label fx:id="output1" maxWidth="10.0" text="古池や" textAlignment="CENTER" wrapText="true">
+                              <Label fx:id="output1" maxWidth="10.0" textAlignment="CENTER" wrapText="true">
                                  <font>
                                     <Font size="36.0" />
                                  </font>
