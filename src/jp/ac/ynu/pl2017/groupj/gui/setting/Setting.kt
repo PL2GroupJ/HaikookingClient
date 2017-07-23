@@ -3,11 +3,9 @@ package jp.ac.ynu.pl2017.groupj.gui.setting
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.fxml.FXML
 import javafx.fxml.Initializable
-import javafx.scene.control.Button
-import javafx.scene.control.Label
-import javafx.scene.control.ToggleButton
-import javafx.scene.control.ToggleGroup
+import javafx.scene.control.*
 import javafx.scene.image.ImageView
+import javafx.scene.text.Font
 import jp.ac.ynu.pl2017.groupj.gui.MainApp
 import jp.ac.ynu.pl2017.groupj.gui.TransitionModalPane
 import jp.ac.ynu.pl2017.groupj.gui.TransitionPane
@@ -32,12 +30,20 @@ class Setting : Initializable, TransitionPane, TransitionModalPane {
     @FXML lateinit var nameLabel: Label
     @FXML lateinit var screenNameLabel: Label
     @FXML lateinit var icon: ImageView
+    @FXML lateinit var fontField: TextField
+    @FXML lateinit var fontCombo: ComboBox<String>
     private val model = SettingModel()
     private val login = SimpleBooleanProperty()    // OAuthの完了をバインドで検知する
 
     override fun initialize(location: URL?, resources: ResourceBundle?) {
-        model.selected.bind(toggleGroup.selectedToggleProperty())
+        model.selectedRadio.bind(toggleGroup.selectedToggleProperty())
+        model.selectedFont.bind(fontCombo.selectionModel.selectedItemProperty())
+        model.selectedFont.addListener { _, _, newValue -> fontField.font = Font.font(newValue, 18.0) }
         toggleGroup.selectToggle(toggleGroup.toggles[User.season.ordinal])
+        fontCombo.run {
+            items.addAll(Font.getFamilies())
+            selectionModel.select(User.font)
+        }
 
         advice.run {
             isSelected = User.advice

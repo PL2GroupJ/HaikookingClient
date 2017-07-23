@@ -38,6 +38,8 @@ class MainApp : Application() {
         println("${User.twitter}")
         println("season = ${User.season}")
         println("advice = ${User.advice}")
+        println("font = ${User.font}")
+        println("ipAddress = ${User.ipAddress}")
     }
 
     /**
@@ -123,7 +125,7 @@ class MainApp : Application() {
             File(PROP_NAME).createNewFile()
             Properties().write(PROP_NAME, IP_ADDRESS to "localhost")
         }
-        val propMap = Properties().read(PROP_NAME, TOKEN, TOKEN_SECRET, SEASON, ADVICE, IP_ADDRESS)
+        val propMap = Properties().read(PROP_NAME, TOKEN, TOKEN_SECRET, SEASON, ADVICE, FONT, IP_ADDRESS)
         if (!propMap[TOKEN].isNullOrEmpty() && !propMap[TOKEN_SECRET].isNullOrEmpty()) {
             val tokenPair = TokenPair(propMap[TOKEN]!!, propMap[TOKEN_SECRET]!!)
             User.twitter = TwitterAPI.loadUser(tokenPair)
@@ -133,6 +135,9 @@ class MainApp : Application() {
         }
         if (!propMap[ADVICE].isNullOrEmpty()) {
             User.advice = propMap[ADVICE]!!.toBoolean()
+        }
+        if (!propMap[FONT].isNullOrEmpty()) {
+            User.font = propMap[FONT]!!
         }
         if (!propMap[IP_ADDRESS].isNullOrEmpty()) {
             User.ipAddress = propMap[IP_ADDRESS]!!
@@ -148,6 +153,7 @@ class MainApp : Application() {
         val TOKEN_SECRET = "tokenSecret"
         val SEASON = "season"
         val ADVICE = "advice"
+        val FONT = "font"
         val IP_ADDRESS = "ipAddress"
     }
 }

@@ -11,11 +11,13 @@ import javafx.scene.image.ImageView
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyEvent
 import javafx.scene.layout.VBox
+import javafx.scene.text.Font
 import jp.ac.ynu.pl2017.groupj.gui.TransitionModalPane
 import jp.ac.ynu.pl2017.groupj.gui.TransitionPane
 import jp.ac.ynu.pl2017.groupj.gui.product.Product
 import jp.ac.ynu.pl2017.groupj.gui.setting.Setting
 import jp.ac.ynu.pl2017.groupj.gui.word.WordCloud
+import jp.ac.ynu.pl2017.groupj.util.User
 import jp.ac.ynu.pl2017.groupj.util.getResourceAsImage
 import jp.ac.ynu.pl2017.groupj.util.showConnectionError
 import java.net.URL
@@ -55,6 +57,7 @@ class Haiku : Initializable, TransitionPane, TransitionModalPane {
             mark.visibleProperty().bind(index.isEqualTo(i))
             mark.image = brush
         }
+        outputs.forEach { it.font = Font.font(User.font, 36.0) }
         left.disableProperty().bind(index.isEqualTo(2))
         right.disableProperty().bind(index.isEqualTo(0))
         left.setOnAction { index.value += 1 }

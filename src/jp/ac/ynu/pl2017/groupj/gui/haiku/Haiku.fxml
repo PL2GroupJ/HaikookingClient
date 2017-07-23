@@ -61,7 +61,7 @@
                      <children>
                         <VBox fx:id="box3" alignment="TOP_CENTER">
                            <children>
-                              <Label fx:id="output3" maxWidth="10.0" textAlignment="CENTER" wrapText="true">
+                              <Label fx:id="output3" maxWidth="10.0" text="日本" textAlignment="CENTER" wrapText="true">
                                  <font>
                                     <Font size="36.0" />
                                  </font>
@@ -72,7 +72,7 @@
                               <Insets />
                            </HBox.margin>
                            <padding>
-                              <Insets left="10.0" right="10.0" top="150.0" />
+                              <Insets left="5.0" right="5.0" top="150.0" />
                            </padding>
                         </VBox>
                         <VBox fx:id="box2" alignment="TOP_CENTER">
@@ -80,7 +80,7 @@
                               <Insets />
                            </HBox.margin>
                            <children>
-                              <Label fx:id="output2" maxWidth="10.0" textAlignment="CENTER" wrapText="true">
+                              <Label fx:id="output2" maxWidth="10.0" text="語の" textAlignment="CENTER" wrapText="true">
                                  <font>
                                     <Font size="36.0" />
                                  </font>
@@ -88,12 +88,12 @@
                               <ImageView fx:id="mark2" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
                            </children>
                            <padding>
-                              <Insets left="10.0" right="10.0" top="60.0" />
+                              <Insets left="5.0" right="5.0" top="60.0" />
                            </padding>
                         </VBox>
                         <VBox fx:id="box1" alignment="TOP_CENTER">
                            <children>
-                              <Label fx:id="output1" maxWidth="10.0" textAlignment="CENTER" wrapText="true">
+                              <Label fx:id="output1" maxWidth="10.0" text="フォント" textAlignment="CENTER" wrapText="true">
                                  <font>
                                     <Font size="36.0" />
                                  </font>
@@ -101,7 +101,7 @@
                               <ImageView fx:id="mark1" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
                            </children>
                            <padding>
-                              <Insets left="10.0" right="10.0" />
+                              <Insets left="5.0" right="5.0" />
                            </padding>
                         </VBox>
                      </children>
