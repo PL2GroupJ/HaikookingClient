@@ -4,14 +4,18 @@
 
 .button {
     -fx-text-fill: white;
-
     -fx-background-color: linear-gradient(#ff5400, #be1d00);
     -fx-background-radius: 10;
 }
 
 .toggle-button {
     -fx-text-fill: white;
+    -fx-background-color: linear-gradient(#ff5400, #be1d00);
+    -fx-background-radius: 10;
+}
 
+.combo-box {
+    -fx-text-fill: white;
     -fx-background-color: linear-gradient(#ff5400, #be1d00);
     -fx-background-radius: 10;
 }

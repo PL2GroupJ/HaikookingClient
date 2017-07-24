@@ -4,22 +4,18 @@
 
 .button {
 	-fx-text-fill: #0000ff;
-
-    /*-fx-background-color: linear-gradient(#EB6100 0%, #E8380D 100%);*/
     -fx-background-radius: 1;
-    
     -fx-background-color:#3c7fb1,linear-gradient(#fafdfe, #e8f5fc),linear-gradient(#eaf6fd 0%, #d9f0fc 49%, #bee6fd 50%, #a7d9f5 100%);
 }
 
 .toggle-button {
-	/*
-    -fx-text-fill: #3E3A39;
-
-    -fx-background-color: linear-gradient(#EFEFEF 0%, #B9C3C9 100%);
-    -fx-background-radius: 5;
-    */
-    
    -fx-text-fill: #0000ff;
    -fx-background-radius: 1;
    -fx-background-color:#3c7fb1,linear-gradient(#fafdfe, #e8f5fc),linear-gradient(#eaf6fd 0%, #d9f0fc 49%, #bee6fd 50%, #a7d9f5 100%);
+}
+
+.combo-box {
+    -fx-text-fill: #0000ff;
+    -fx-background-radius: 1;
+    -fx-background-color:#3c7fb1,linear-gradient(#fafdfe, #e8f5fc),linear-gradient(#eaf6fd 0%, #d9f0fc 49%, #bee6fd 50%, #a7d9f5 100%);
 }
