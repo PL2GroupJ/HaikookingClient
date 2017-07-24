@@ -43,24 +43,16 @@ class HaikuModel {
      * 俳句付き(と無し)の二枚の画像を生成する。Google検索をしていない今は処理速度は気にならない。
      */
     fun generateImage(): Pair<Image, Image> {
-        // TODO: 画像がダウンロード出来なかった時の処理を書く
-//        val random = Random()
-//        val backLink = GoogleSearch.search(nounList[0])[random.nextInt(10)].link
-//        val backImage = HttpUtils.downloadImage(backLink)
-//        progressBar.value += 0.25
-//        val images = nounList.drop(1).take(2).map {
-//            val link = GoogleSearch.search(it)[random.nextInt(10)].link
-//            val image = HttpUtils.downloadImage(link)
-//            progressBar.value += 0.25
-//            image
-//        }
-        val backImage = "image/test/test_back.jpg".getResourceAsImage()
-        Thread.sleep(1000)
-        progress.value += 0.3
-        val images = arrayOf("image/test/test1.jpg", "image/test/test2.jpg").map {
-            Thread.sleep(1000)
-            progress.value += 0.3
-            it.getResourceAsImage()
+        val random = Random()
+        val backLink = GoogleSearch.search(nounList[0])[random.nextInt(10)].link
+        val backImage = HttpUtils.downloadImage(backLink)
+        progress.value += 0.25
+        val images = nounList.drop(1).take(2).map {
+            val link = GoogleSearch.search(it)[random.nextInt(10)].link
+            progress.value += 0.12
+            val image = HttpUtils.downloadImage(link)
+            progress.value += 0.12
+            image
         }
         ImageUtil.createHaikuImage(backImage, images.toTypedArray(), haiku.value.split(System.lineSeparator()).toTypedArray(), season)
         progress.value = 1.0

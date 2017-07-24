@@ -61,7 +61,7 @@
                      <children>
                         <VBox fx:id="box3" alignment="TOP_CENTER">
                            <children>
-                              <Label fx:id="output3" maxWidth="10.0" text="日本" textAlignment="CENTER" wrapText="true">
+                              <Label fx:id="output3" maxWidth="10.0" textAlignment="CENTER" wrapText="true">
                                  <font>
                                     <Font size="36.0" />
                                  </font>
@@ -80,7 +80,7 @@
                               <Insets />
                            </HBox.margin>
                            <children>
-                              <Label fx:id="output2" maxWidth="10.0" text="語の" textAlignment="CENTER" wrapText="true">
+                              <Label fx:id="output2" maxWidth="10.0" textAlignment="CENTER" wrapText="true">
                                  <font>
                                     <Font size="36.0" />
                                  </font>
@@ -93,7 +93,7 @@
                         </VBox>
                         <VBox fx:id="box1" alignment="TOP_CENTER">
                            <children>
-                              <Label fx:id="output1" maxWidth="10.0" text="フォント" textAlignment="CENTER" wrapText="true">
+                              <Label fx:id="output1" maxWidth="10.0" textAlignment="CENTER" wrapText="true">
                                  <font>
                                     <Font size="36.0" />
                                  </font>
