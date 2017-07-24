@@ -1,6 +1,7 @@
 package jp.ac.ynu.pl2017.groupj.gui
 
 import javafx.application.Application
+import javafx.beans.property.SimpleDoubleProperty
 import javafx.embed.swing.SwingFXUtils
 import javafx.fxml.FXMLLoader
 import javafx.scene.Parent
@@ -90,6 +91,10 @@ class MainApp : Application() {
         if (controller is HidePane) {
             controller.hide = modalStage::hide
         }
+        if (controller is ResizePane) {
+            controller.widthProperty.bind(modalStage.scene.widthProperty())
+            controller.heightProperty.bind(modalStage.scene.heightProperty())
+        }
     }
 
     /**
@@ -172,6 +177,11 @@ interface SaveImagePane {
 
 interface HidePane {
     var hide: () -> Unit
+}
+
+interface ResizePane {
+    val widthProperty: SimpleDoubleProperty
+    val heightProperty: SimpleDoubleProperty
 }
 
 fun main(args: Array<String>) {

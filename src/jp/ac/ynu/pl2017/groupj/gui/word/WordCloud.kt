@@ -1,6 +1,7 @@
 package jp.ac.ynu.pl2017.groupj.gui.word
 
 import javafx.application.Platform
+import javafx.beans.property.SimpleDoubleProperty
 import javafx.concurrent.Task
 import javafx.fxml.FXML
 import javafx.fxml.Initializable
@@ -8,6 +9,7 @@ import javafx.scene.control.Alert
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import jp.ac.ynu.pl2017.groupj.gui.HidePane
+import jp.ac.ynu.pl2017.groupj.gui.ResizePane
 import jp.ac.ynu.pl2017.groupj.net.HaikookingConnection
 import jp.ac.ynu.pl2017.groupj.util.showConnectionError
 import java.net.URL
@@ -17,8 +19,10 @@ import java.util.concurrent.Executors
 /**
  * WordCloudの表示画面のコントローラー。この画面はモーダルで表示する。
  */
-class WordCloud : Initializable, HidePane {
+class WordCloud : Initializable, HidePane, ResizePane {
     override lateinit var hide: () -> Unit
+    override val heightProperty = SimpleDoubleProperty()
+    override val widthProperty  = SimpleDoubleProperty()
     @FXML lateinit var total: ImageView
     @FXML lateinit var week: ImageView
     @FXML lateinit var month: ImageView
@@ -30,6 +34,11 @@ class WordCloud : Initializable, HidePane {
 
     override fun initialize(location: URL?, resources: ResourceBundle?) {
         val imageViews = arrayOf(total, week, month, spring, summer, autumn, winter, newYear)
+        imageViews.forEach { imageView ->
+            val minSize = if (widthProperty.value < heightProperty.value) widthProperty else heightProperty
+            imageView.fitWidthProperty().bind(minSize)
+            imageView.fitHeightProperty().bind(minSize)
+        }
         val con = HaikookingConnection()
         if (!con.openConnection()) {
             Alert(Alert.AlertType.INFORMATION).showConnectionError()
