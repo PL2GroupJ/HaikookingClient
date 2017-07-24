@@ -1,6 +1,7 @@
 package jp.ac.ynu.pl2017.groupj.gui.word
 
 import javafx.application.Platform
+import javafx.beans.binding.Bindings
 import javafx.beans.property.SimpleDoubleProperty
 import javafx.concurrent.Task
 import javafx.fxml.FXML
@@ -35,7 +36,9 @@ class WordCloud : Initializable, HidePane, ResizePane {
     override fun initialize(location: URL?, resources: ResourceBundle?) {
         val imageViews = arrayOf(total, week, month, spring, summer, autumn, winter, newYear)
         imageViews.forEach { imageView ->
-            val minSize = if (widthProperty.value < heightProperty.value) widthProperty else heightProperty
+            val minSize = Bindings.`when`(widthProperty.lessThan(heightProperty.subtract(20)))
+                    .then(widthProperty)
+                    .otherwise(heightProperty.subtract(20))
             imageView.fitWidthProperty().bind(minSize)
             imageView.fitHeightProperty().bind(minSize)
         }
